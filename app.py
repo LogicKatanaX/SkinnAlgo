@@ -107,12 +107,14 @@ def run_analysis_pipeline(bgr_img, p_wash, p_env, p_barrier, p_goal):
 # Render branding header
 render_header()
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 preset_names = {
-    "Oily & Active Breakouts": "assets/samples/oily_acne_profile.png",
-    "Dry & Vascular Erythema": "assets/samples/dry_erythema_profile.png",
-    "Combination & Hyperpigmentation": "assets/samples/combo_pigment_profile.png",
-    "Balanced Eudermic": "assets/samples/balanced_profile.png"
+    "Oily & Active Breakouts": os.path.join(BASE_DIR, "assets", "samples", "oily_acne_profile.png"),
+    "Dry & Vascular Erythema": os.path.join(BASE_DIR, "assets", "samples", "dry_erythema_profile.png"),
+    "Combination & Hyperpigmentation": os.path.join(BASE_DIR, "assets", "samples", "combo_pigment_profile.png"),
+    "Balanced Eudermic": os.path.join(BASE_DIR, "assets", "samples", "balanced_profile.png")
 }
+default_avatar_path = os.path.join(BASE_DIR, "assets", "default_avatar.png")
 
 # Sidebar: Intake and Image Selector
 with st.sidebar:
@@ -126,7 +128,6 @@ with st.sidebar:
     )
 
     input_bgr = None
-    default_avatar_path = "assets/default_avatar.png"
 
     if img_mode == "Upload Portrait":
         uploaded_file = st.file_uploader("Select Portrait Image", type=["jpg", "jpeg", "png"], help="High-resolution frontal view in natural lighting.")
@@ -136,7 +137,8 @@ with st.sidebar:
             st.image(pil_img, caption="Loaded Facial Portrait", use_container_width=True)
         else:
             if os.path.exists(default_avatar_path):
-                st.image(default_avatar_path, caption="Awaiting Portrait Upload", use_container_width=True)
+                avatar_img = Image.open(default_avatar_path)
+                st.image(avatar_img, caption="Awaiting Portrait Upload", use_container_width=True)
 
     elif img_mode == "Clinical Presets":
         chosen_preset = st.selectbox(
@@ -147,7 +149,8 @@ with st.sidebar:
         sample_path = preset_names[chosen_preset]
         if os.path.exists(sample_path):
             input_bgr = cv2.imread(sample_path)
-            st.image(cv2.cvtColor(input_bgr, cv2.COLOR_BGR2RGB), caption=f"Profile: {chosen_preset}", use_container_width=True)
+            sample_pil = Image.open(sample_path)
+            st.image(sample_pil, caption=f"Profile: {chosen_preset}", use_container_width=True)
 
     elif img_mode == "Webcam Capture":
         cam_file = st.camera_input("Capture Live Portrait")
@@ -211,7 +214,12 @@ if analyze_btn:
         run_analysis_pipeline(input_bgr, post_wash, env, barrier, goal)
         st.rerun()
     else:
-        st.sidebar.warning("Please upload a portrait or select a preset before analyzing.")
+        # Fail-safe demo: auto-load calibrated profile if user clicks without uploading
+        default_p_path = preset_names["Oily & Active Breakouts"]
+        if os.path.exists(default_p_path):
+            demo_img = cv2.imread(default_p_path)
+            run_analysis_pipeline(demo_img, post_wash, env, barrier, goal)
+            st.rerun()
 
 
 # Main View Tabs
@@ -230,35 +238,55 @@ with tab1:
     if st.session_state.analysis_result is None:
         render_empty_hero()
 
-        st.markdown("<div style='text-align: center; margin-bottom: 0.8rem; font-size: 0.85rem; color: #64748B; font-weight: 500;'>Or test immediately with a calibrated clinical profile:</div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: center; margin-bottom: 0.8rem; font-size: 0.85rem; color: #94A3B8; font-weight: 500;'>Quick Test with a Pre-Calibrated Clinical Profile:</div>", unsafe_allow_html=True)
         qc1, qc2, qc3, qc4 = st.columns(4)
 
         with qc1:
-            if st.button("Oily & Breakouts", use_container_width=True, key="qc_oily"):
-                p_img = cv2.imread(preset_names["Oily & Active Breakouts"])
-                run_analysis_pipeline(p_img, "shiny_all_over", "humid_tropical", "resilient", "clear_breakouts")
-                st.rerun()
+            if st.button("Oily & Breakouts", use_container_width=True, key="btn_oily"):
+                p_path = preset_names["Oily & Active Breakouts"]
+                if os.path.exists(p_path):
+                    p_img = cv2.imread(p_path)
+                    run_analysis_pipeline(p_img, "shiny_all_over", "humid_tropical", "resilient", "clear_breakouts")
+                    st.rerun()
 
         with qc2:
-            if st.button("Dry & Erythema", use_container_width=True, key="qc_dry"):
-                p_img = cv2.imread(preset_names["Dry & Vascular Erythema"])
-                run_analysis_pipeline(p_img, "tight_parched", "cold_arid", "stings_easily", "repair_barrier")
-                st.rerun()
+            if st.button("Dry & Erythema", use_container_width=True, key="btn_dry"):
+                p_path = preset_names["Dry & Vascular Erythema"]
+                if os.path.exists(p_path):
+                    p_img = cv2.imread(p_path)
+                    run_analysis_pipeline(p_img, "tight_parched", "cold_arid", "stings_easily", "repair_barrier")
+                    st.rerun()
 
         with qc3:
-            if st.button("Combination Skin", use_container_width=True, key="qc_combo"):
-                p_img = cv2.imread(preset_names["Combination & Hyperpigmentation"])
-                run_analysis_pipeline(p_img, "oily_t_zone_only", "moderate_temperate", "resilient", "fade_dark_spots")
-                st.rerun()
+            if st.button("Combination Skin", use_container_width=True, key="btn_combo"):
+                p_path = preset_names["Combination & Hyperpigmentation"]
+                if os.path.exists(p_path):
+                    p_img = cv2.imread(p_path)
+                    run_analysis_pipeline(p_img, "oily_t_zone_only", "moderate_temperate", "resilient", "fade_dark_spots")
+                    st.rerun()
 
         with qc4:
-            if st.button("Balanced Skin", use_container_width=True, key="qc_balanced"):
-                p_img = cv2.imread(preset_names["Balanced Eudermic"])
-                run_analysis_pipeline(p_img, "balanced_supple", "moderate_temperate", "resilient", "smooth_texture")
-                st.rerun()
+            if st.button("Balanced Skin", use_container_width=True, key="btn_balanced"):
+                p_path = preset_names["Balanced Eudermic"]
+                if os.path.exists(p_path):
+                    p_img = cv2.imread(p_path)
+                    run_analysis_pipeline(p_img, "balanced_supple", "moderate_temperate", "resilient", "smooth_texture")
+                    st.rerun()
 
     else:
         cv_res: SkinAnalysisResult = st.session_state.analysis_result
+
+        # Reset button header row
+        top_c1, top_c2 = st.columns([6, 2])
+        with top_c1:
+            st.markdown("<div style='font-size: 1.15rem; font-weight: 600; color: #F8FAFC;'>Diagnostic Metric Overview</div>", unsafe_allow_html=True)
+        with top_c2:
+            if st.button("New Diagnostic Scan", use_container_width=True, key="btn_reset"):
+                st.session_state.analysis_result = None
+                st.session_state.regimen_result = None
+                st.session_state.intake_data = None
+                st.session_state.cross_val = None
+                st.rerun()
 
         # Metric Gauges
         render_metric_cards(cv_res)

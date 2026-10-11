@@ -235,24 +235,29 @@ html, body, [class*="css"], [class*="st-"] {
     justify-content: space-between;
 }
 
-/* Primary Button Styling */
+/* Sleek Luxury Button Styling */
 .stButton > button {
-    background: #4F46E5 !important;
+    background: linear-gradient(180deg, #4F46E5 0%, #4338CA 100%) !important;
     color: #FFFFFF !important;
     font-weight: 600 !important;
     font-size: 0.88rem !important;
-    border-radius: 8px !important;
-    border: none !important;
-    padding: 0.55rem 1.4rem !important;
-    letter-spacing: 0.01em !important;
+    border-radius: 10px !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    padding: 0.6rem 1.4rem !important;
+    letter-spacing: -0.01em !important;
     box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35) !important;
-    transition: all 0.2s ease !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .stButton > button:hover {
-    background: #4338CA !important;
+    background: linear-gradient(180deg, #6366F1 0%, #4F46E5 100%) !important;
     transform: translateY(-1px) !important;
-    box-shadow: 0 6px 18px rgba(79, 70, 229, 0.45) !important;
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.stButton > button:active {
+    transform: translateY(0px) !important;
 }
 
 /* Tabs Header */
@@ -277,15 +282,25 @@ html, body, [class*="css"], [class*="st-"] {
     border-bottom: 2px solid #6366F1 !important;
 }
 
-/* Remove default Streamlit top padding */
+/* Remove default Streamlit top padding & preserve sidebar toggle header */
 .block-container {
     padding-top: 2rem !important;
     padding-bottom: 3rem !important;
     max-width: 1200px !important;
 }
 
-header {visibility: hidden;}
-footer {visibility: hidden;}
+header {
+    background-color: transparent !important;
+}
+[data-testid="stDecoration"] {
+    display: none !important;
+}
+[data-testid="stToolbar"] {
+    visibility: hidden !important;
+}
+footer {
+    display: none !important;
+}
 </style>
 """
 
