@@ -114,7 +114,7 @@ SkinnAlgo indexes 28 verified clinical cosmeceutical compounds categorized with 
 
 ### 1. Clone & Set Up Environment
 ```bash
-git clone https://github.com/your-username/SkinnAlgo.git
+git clone https://github.com/LogicKatanaX/SkinnAlgo.git
 cd SkinnAlgo
 
 # Create virtual environment
