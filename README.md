@@ -1,5 +1,6 @@
 # 🔬 SkinnAlgo: Multimodal Skin Condition Intelligence & Cosmeceutical Compound Recommender
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-skinnalgo.streamlit.app-FF4B4B.svg?logo=streamlit&logoColor=white)](https://skinnalgo.streamlit.app/)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![PyTest Status](https://img.shields.io/badge/PyTest-36%2F36%20Passing-emerald.svg?logo=pytest&logoColor=white)](https://docs.pytest.org/)
 [![OpenCV](https://img.shields.io/badge/OpenCV-5.0-red.svg?logo=opencv&logoColor=white)](https://opencv.org/)

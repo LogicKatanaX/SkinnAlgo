@@ -170,57 +170,32 @@ st.markdown("""
     <div class="section-badge">Step 01 • Dermal Radiance & Anthropometric Zoning</div>
     <div class="section-title">Facial Diagnostic Capture Studio</div>
     <div class="section-desc">
-        Select a calibrated clinical dermatology profile, upload a high-resolution selfie, or capture live with your camera.
+        Upload a high-resolution frontal facial selfie to execute computer vision colorimetry and personalized cosmeceutical formulation.
     </div>
 """, unsafe_allow_html=True)
 
 capture_col_left, capture_col_right = st.columns([1.15, 0.85], gap="large")
 
 input_bgr = None
-chosen_preset = "Oily & Active Breakouts"
 
 with capture_col_left:
     img_mode = st.radio(
         "Select Diagnostic Input Mode:",
-        ["Clinical Presets (Calibrated Profiles)", "Upload Facial Portrait", "Live Webcam Capture"],
+        ["Upload Facial Portrait"],
         index=0,
         horizontal=True
     )
 
-    if img_mode == "Clinical Presets (Calibrated Profiles)":
-        chosen_preset = st.selectbox(
-            "Choose Calibrated Profile:",
-            list(preset_names.keys()),
-            index=0
-        )
-        sample_path = preset_names[chosen_preset]
-        if os.path.exists(sample_path):
-            input_bgr = cv2.imread(sample_path)
-        
-        st.markdown(f"""
-            <div style="background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.25); border-radius: 12px; padding: 0.9rem 1.1rem; margin-top: 0.8rem;">
-                <div style="font-size: 0.82rem; font-weight: 600; color: #818CF8; margin-bottom: 3px;">Profile Clinical Benchmark:</div>
-                <div style="font-size: 0.82rem; color: #CBD5E1; line-height: 1.45;">{preset_descriptions[chosen_preset]}</div>
-            </div>
-        """, unsafe_allow_html=True)
-
-    elif img_mode == "Upload Facial Portrait":
-        uploaded_file = st.file_uploader(
-            "Upload Frontal Selfie (JPG or PNG):",
-            type=["jpg", "jpeg", "png"],
-            help="High-resolution frontal view in natural daylight, without makeup or filters."
-        )
-        if uploaded_file is not None:
-            pil_img = Image.open(uploaded_file).convert("RGB")
-            input_bgr = cv2.cvtColor(np.array(pil_img), cv2.COLOR_RGB2BGR)
-        else:
-            st.info("💡 Tip: Upload a clear, well-lit photo looking straight at the camera. Neutral expression provides the highest landmark accuracy.")
-
-    elif img_mode == "Live Webcam Capture":
-        cam_file = st.camera_input("Align Face & Capture Biometric Portrait")
-        if cam_file is not None:
-            pil_img = Image.open(cam_file).convert("RGB")
-            input_bgr = cv2.cvtColor(np.array(pil_img), cv2.COLOR_RGB2BGR)
+    uploaded_file = st.file_uploader(
+        "Upload Frontal Selfie (JPG or PNG):",
+        type=["jpg", "jpeg", "png"],
+        help="High-resolution frontal view in natural daylight, without makeup or filters."
+    )
+    if uploaded_file is not None:
+        pil_img = Image.open(uploaded_file).convert("RGB")
+        input_bgr = cv2.cvtColor(np.array(pil_img), cv2.COLOR_RGB2BGR)
+    else:
+        st.info("💡 Tip: Upload a clear, well-lit photo looking straight at the camera. Neutral expression provides the highest landmark accuracy.")
 
 with capture_col_right:
     st.markdown("<div style='font-size: 0.88rem; font-weight: 600; color: #94A3B8; margin-bottom: 0.5rem;'>Portrait Viewport</div>", unsafe_allow_html=True)
@@ -236,10 +211,10 @@ with capture_col_right:
     else:
         if os.path.exists(default_avatar_path):
             avatar_img = Image.open(default_avatar_path)
-            st.image(avatar_img, caption="Awaiting Portrait Selection", use_container_width=True)
+            st.image(avatar_img, caption="Awaiting Portrait Upload", use_container_width=True)
         st.markdown("""
             <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(148, 163, 184, 0.1); border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 8px; padding: 6px 12px; margin-top: 6px;">
-                <span style="font-size: 0.78rem; color: #94A3B8;">○ Awaiting Portrait Upload or Preset</span>
+                <span style="font-size: 0.78rem; color: #94A3B8;">○ Awaiting Portrait Upload</span>
                 <span class="pill-badge pill-cyan">Awaiting</span>
             </div>
         """, unsafe_allow_html=True)
@@ -259,18 +234,10 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Intelligent pre-fill based on selected preset
-default_wash_idx = 2 if (img_mode.startswith("Clinical Presets") and "Oily" in chosen_preset) else (
-    0 if (img_mode.startswith("Clinical Presets") and "Dry" in chosen_preset) else (
-        3 if (img_mode.startswith("Clinical Presets") and "Combination" in chosen_preset) else 1
-    )
-)
-default_barrier_idx = 0 if (img_mode.startswith("Clinical Presets") and "Dry" in chosen_preset) else 2
-default_goal_idx = 0 if (img_mode.startswith("Clinical Presets") and "Oily" in chosen_preset) else (
-    2 if (img_mode.startswith("Clinical Presets") and "Dry" in chosen_preset) else (
-        1 if (img_mode.startswith("Clinical Presets") and "Combination" in chosen_preset) else 3
-    )
-)
+# Default clinical indices
+default_wash_idx = 1
+default_barrier_idx = 2
+default_goal_idx = 0
 
 intake_c1, intake_c2 = st.columns(2, gap="large")
 
