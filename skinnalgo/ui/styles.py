@@ -7,6 +7,10 @@ LUXURY_CSS = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap');
 
+html {
+    scroll-behavior: smooth;
+}
+
 html, body, [class*="css"], [class*="st-"] {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     color: #F1F5F9;
@@ -232,7 +236,112 @@ html, body, [class*="css"], [class*="st-"] {
     color: #38BDF8;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 6px;
+}
+
+/* Completely eliminate sidebar from the page */
+[data-testid="stSidebar"], [data-testid="collapsedControl"] {
+    display: none !important;
+}
+
+/* 3D Glass Step Tracker Ribbon */
+.step-tracker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 1.5rem auto 2.5rem auto;
+    max-width: 720px;
+}
+
+.step-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 18px;
+    border-radius: 9999px;
+    background: rgba(22, 26, 38, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    transition: all 0.3s ease;
+}
+
+.step-item.active {
+    background: rgba(99, 102, 241, 0.18);
+    border-color: rgba(99, 102, 241, 0.5);
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.25);
+}
+
+.step-num-badge {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #6366F1;
+    color: #FFFFFF;
+    font-size: 0.72rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.step-name {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #F8FAFC;
+    letter-spacing: -0.01em;
+}
+
+.step-divider-line {
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    max-width: 40px;
+}
+
+/* 3D Luxury Glass Card */
+.glass-3d-card {
+    background: linear-gradient(135deg, rgba(20, 24, 36, 0.85) 0%, rgba(12, 14, 22, 0.95) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 18px;
+    padding: 1.6rem 1.8rem;
+    margin-bottom: 1.6rem;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(16px);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-3d-card:hover {
+    border-color: rgba(99, 102, 241, 0.35);
+    box-shadow: 0 24px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(99, 102, 241, 0.15);
+    transform: translateY(-2px);
+}
+
+.section-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #818CF8;
+    margin-bottom: 0.5rem;
+}
+
+.section-title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #F8FAFC;
+    margin-bottom: 0.3rem;
+}
+
+.section-desc {
+    font-size: 0.88rem;
+    color: #94A3B8;
+    margin-bottom: 1.2rem;
+    line-height: 1.5;
 }
 
 /* Sleek Luxury Button Styling */
@@ -240,20 +349,20 @@ html, body, [class*="css"], [class*="st-"] {
     background: linear-gradient(180deg, #4F46E5 0%, #4338CA 100%) !important;
     color: #FFFFFF !important;
     font-weight: 600 !important;
-    font-size: 0.88rem !important;
-    border-radius: 10px !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    padding: 0.6rem 1.4rem !important;
+    font-size: 0.92rem !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    padding: 0.7rem 1.8rem !important;
     letter-spacing: -0.01em !important;
-    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35) !important;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    box-shadow: 0 8px 24px rgba(79, 70, 229, 0.4) !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .stButton > button:hover {
     background: linear-gradient(180deg, #6366F1 0%, #4F46E5 100%) !important;
-    transform: translateY(-1px) !important;
-    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45) !important;
-    border-color: rgba(255, 255, 255, 0.3) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 12px 30px rgba(99, 102, 241, 0.55) !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
 }
 
 .stButton > button:active {
@@ -282,11 +391,11 @@ html, body, [class*="css"], [class*="st-"] {
     border-bottom: 2px solid #6366F1 !important;
 }
 
-/* Remove default Streamlit top padding & preserve sidebar toggle header */
+/* Remove default Streamlit top padding & preserve center canvas */
 .block-container {
-    padding-top: 2rem !important;
-    padding-bottom: 3rem !important;
-    max-width: 1200px !important;
+    padding-top: 1.5rem !important;
+    padding-bottom: 4rem !important;
+    max-width: 1100px !important;
 }
 
 header {
