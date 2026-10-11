@@ -33,6 +33,185 @@ html, body, p, h1, h2, h3, h4, h5, h6, label, input, textarea, select, button, d
     border: none !important;
 }
 
+/* File Uploader Dropzone Container (Zero Dark Mode) */
+[data-testid="stFileUploaderDropzone"] {
+    background-color: #FFFFFF !important;
+    background: linear-gradient(135deg, #FFFFFF 0%, #F0F9FF 100%) !important;
+    border: 2px dashed rgba(14, 165, 233, 0.35) !important;
+    border-radius: 14px !important;
+    padding: 1.5rem !important;
+    box-shadow: 0 4px 16px rgba(14, 165, 233, 0.05) !important;
+    transition: all 0.2s ease !important;
+}
+
+[data-testid="stFileUploaderDropzone"]:hover {
+    border-color: #0284C7 !important;
+    background: #F0F9FF !important;
+}
+
+[data-testid="stFileUploaderDropzone"] span,
+[data-testid="stFileUploaderDropzone"] small,
+[data-testid="stFileUploaderDropzone"] div {
+    color: #334155 !important;
+}
+
+[data-testid="stFileUploaderDropzone"] small {
+    color: #64748B !important;
+    font-size: 0.8rem !important;
+}
+
+[data-testid="stFileUploaderDropzoneInstructions"],
+[data-testid="stFileUploaderDropzoneInstructions"] * {
+    color: #475569 !important;
+}
+
+[data-testid="stFileUploaderFileData"] {
+    background-color: #F0F9FF !important;
+    border: 1px solid rgba(14, 165, 233, 0.25) !important;
+    border-radius: 10px !important;
+    color: #0F172A !important;
+}
+
+[data-testid="stFileUploaderFileData"] * {
+    color: #0F172A !important;
+}
+
+[data-testid="stFileUploaderDeleteBtn"] button {
+    background: transparent !important;
+    border: none !important;
+    color: #64748B !important;
+}
+
+[data-testid="stFileUploaderDeleteBtn"] button:hover {
+    color: #E11D48 !important;
+}
+
+/* BaseWeb Select Box Container & Inputs (Eradicate Dark Backgrounds) */
+div[data-baseweb="select"] {
+    background-color: transparent !important;
+}
+
+div[data-baseweb="select"] > div {
+    background-color: #FFFFFF !important;
+    border: 1px solid rgba(14, 165, 233, 0.28) !important;
+    border-radius: 12px !important;
+    color: #0F172A !important;
+    box-shadow: 0 2px 8px rgba(14, 165, 233, 0.04) !important;
+    transition: all 0.2s ease !important;
+}
+
+div[data-baseweb="select"] > div:hover {
+    border-color: #0284C7 !important;
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.12) !important;
+}
+
+div[data-baseweb="select"] > div:focus-within {
+    border-color: #0284C7 !important;
+    box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.25) !important;
+}
+
+/* All text inside select box */
+div[data-baseweb="select"] * {
+    color: #0F172A !important;
+    font-size: 0.92rem !important;
+    font-weight: 500 !important;
+}
+
+/* Dropdown Caret Icon */
+div[data-baseweb="select"] svg {
+    fill: #0284C7 !important;
+    color: #0284C7 !important;
+}
+
+/* Dropdown Menu Popover / Floating Menu (White & Coastal Palette) */
+div[data-baseweb="popover"],
+div[data-baseweb="popover"] > div,
+ul[role="listbox"],
+ul[data-baseweb="menu"] {
+    background-color: #FFFFFF !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(14, 165, 233, 0.25) !important;
+    box-shadow: 0 12px 32px rgba(14, 165, 233, 0.16) !important;
+}
+
+li[role="option"] {
+    background-color: #FFFFFF !important;
+    color: #0F172A !important;
+    font-size: 0.9rem !important;
+    padding: 10px 14px !important;
+    border-bottom: 1px solid rgba(14, 165, 233, 0.08) !important;
+    transition: all 0.15s ease !important;
+}
+
+li[role="option"]:hover,
+li[role="option"][aria-selected="true"] {
+    background-color: #F0F9FF !important;
+    color: #0284C7 !important;
+    font-weight: 600 !important;
+}
+
+li[role="option"] * {
+    color: inherit !important;
+}
+
+/* Input Fields (Zero Dark) */
+input[type="text"], input[type="number"], textarea, div[data-baseweb="input"] > div {
+    background-color: #FFFFFF !important;
+    border: 1px solid rgba(14, 165, 233, 0.28) !important;
+    border-radius: 10px !important;
+    color: #0F172A !important;
+}
+
+input[type="text"]:focus, input[type="number"]:focus, textarea:focus, div[data-baseweb="input"] > div:focus-within {
+    border-color: #0284C7 !important;
+    box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2) !important;
+}
+
+/* Portrait Viewport Image Styling */
+[data-testid="stImage"] {
+    background-color: transparent !important;
+    border-radius: 14px !important;
+}
+
+[data-testid="stImage"] > img {
+    border-radius: 14px !important;
+    border: 1px solid rgba(14, 165, 233, 0.25) !important;
+    box-shadow: 0 4px 18px rgba(14, 165, 233, 0.08) !important;
+    background-color: #FFFFFF !important;
+}
+
+[data-testid="stImageCaption"] {
+    color: #475569 !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+}
+
+/* Streamlit Alerts (Clean Seafoam / Aqua) */
+[data-testid="stAlert"] {
+    background-color: #F0F9FF !important;
+    color: #0369A1 !important;
+    border: 1px solid rgba(14, 165, 233, 0.3) !important;
+    border-radius: 12px !important;
+}
+
+[data-testid="stAlert"] * {
+    color: #0369A1 !important;
+}
+
+/* Streamlit Expanders */
+details, [data-testid="stExpander"] {
+    background-color: #FFFFFF !important;
+    border: 1px solid rgba(14, 165, 233, 0.22) !important;
+    border-radius: 12px !important;
+    color: #0F172A !important;
+}
+
+[data-testid="stExpander"] summary {
+    color: #0F172A !important;
+    font-weight: 600 !important;
+}
+
+
 /* Base App Coastal Water Sea-Blue & Sea-Green Background (NO DARK MODE) */
 .stApp {
     background-color: #F8FAFC !important;

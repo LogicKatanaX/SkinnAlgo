@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 
 
-def create_base_portrait(w=640, h=720, skin_bgr=(165, 195, 230), bg_bgr=(25, 28, 35)):
+def create_base_portrait(w=640, h=720, skin_bgr=(165, 195, 230), bg_bgr=(245, 248, 252)):
     """Creates a base human portrait with realistic facial geometry and landmarks."""
     img = np.full((h, w, 3), bg_bgr, dtype=np.uint8)
 
