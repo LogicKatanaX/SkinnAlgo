@@ -4,7 +4,7 @@ Computes Laplacian gradient variance and morphological lesion clusters.
 """
 
 from dataclasses import dataclass
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 import cv2
 import numpy as np
 
@@ -61,12 +61,17 @@ class TextureBlemishAnalyzer:
     def detect_blemishes(
         self,
         bgr_img: np.ndarray,
-        roi_mask: np.ndarray
+        roi_mask: np.ndarray,
+        lip_mask: Optional[np.ndarray] = None
     ) -> List[BlemishDetection]:
         """
         Isolate localized inflammatory spots and hyperpigmented macules
         using adaptive thresholding and morphological blob analysis.
+        Suppresses false positives on mucosal lips and border artifacts.
         """
+        if lip_mask is not None and np.count_nonzero(lip_mask) > 0:
+            roi_mask = cv2.bitwise_and(roi_mask, cv2.bitwise_not(lip_mask))
+
         lab = cv2.cvtColor(bgr_img, cv2.COLOR_BGR2Lab)
         l_channel = lab[:, :, 0]
         a_channel = lab[:, :, 1]
@@ -104,6 +109,12 @@ class TextureBlemishAnalyzer:
                         (cx, cy), radius = cv2.minEnclosingCircle(cnt)
                         cx, cy, r = int(cx), int(cy), max(4, int(radius))
 
+                        # Avoid edge boundaries and lip regions
+                        if cx < 6 or cx >= w - 6 or cy < 6 or cy >= h - 6:
+                            continue
+                        if lip_mask is not None and lip_mask[cy, cx] > 0:
+                            continue
+
                         # Classify type based on local color
                         sub_a = float(a_channel[max(0, cy - r):min(h, cy + r), max(0, cx - r):min(w, cx + r)].mean())
                         sub_l = float(l_channel[max(0, cy - r):min(h, cy + r), max(0, cx - r):min(w, cx + r)].mean())
@@ -130,14 +141,15 @@ class TextureBlemishAnalyzer:
     def analyze(
         self,
         bgr_img: np.ndarray,
-        roi_mask: np.ndarray
+        roi_mask: np.ndarray,
+        lip_mask: Optional[np.ndarray] = None
     ) -> TextureMetricResult:
         """
         Analyze texture roughness and blemish distribution.
         """
         gray = cv2.cvtColor(bgr_img, cv2.COLOR_BGR2GRAY)
         roughness, variance = self.compute_texture_roughness(gray, roi_mask)
-        blemishes = self.detect_blemishes(bgr_img, roi_mask)
+        blemishes = self.detect_blemishes(bgr_img, roi_mask, lip_mask=lip_mask)
 
         skin_px_count = np.count_nonzero(roi_mask)
         blemish_density = float((len(blemishes) / max(1, skin_px_count)) * 1000.0)

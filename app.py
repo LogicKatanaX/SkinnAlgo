@@ -1,6 +1,6 @@
 """
 SkinnAlgo — Multimodal Skin Condition Intelligence & Cosmeceutical Compound Recommender.
-Production Streamlit Application — Flagship 3D Stepped Architecture (Zero Sidebar).
+Production Streamlit Application — Coastal Sea-Blue & Sea-Green Biotech Aesthetic (Zero Dark Mode).
 """
 
 import os
@@ -38,13 +38,13 @@ from skinnalgo.ui.components import (
 
 # Page configuration — Zero sidebar flagship canvas
 st.set_page_config(
-    page_title="SkinnAlgo — Multimodal Skin Condition Intelligence",
-    page_icon="🔬",
+    page_title="SkinnAlgo — Coastal Dermal Intelligence",
+    page_icon="🌊",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# Inject luxury dark styling & hide all sidebar elements
+# Inject coastal sea-blue and sea-green luxury styling
 inject_luxury_styles()
 
 
@@ -76,7 +76,7 @@ if "cross_val" not in st.session_state:
 
 # Helper function for executing analysis
 def run_analysis_pipeline(bgr_img, p_wash, p_env, p_barrier, p_goal):
-    with st.spinner("Executing Computer Vision colorimetry and landmark segmentation..."):
+    with st.spinner("Executing Computer Vision colorimetry, lip masking, and landmark segmentation..."):
         cv_pipe = get_cv_pipeline()
         analysis = cv_pipe.analyze(bgr_img)
         st.session_state.analysis_result = analysis
@@ -114,12 +114,6 @@ preset_names = {
     "Combination & Hyperpigmentation": os.path.join(BASE_DIR, "assets", "samples", "combo_pigment_profile.png"),
     "Balanced Eudermic": os.path.join(BASE_DIR, "assets", "samples", "balanced_profile.png")
 }
-preset_descriptions = {
-    "Oily & Active Breakouts": "High sebaceous lipid sheen (T-Zone/U-Zone) with active inflammatory papules and follicular hyperkeratinization.",
-    "Dry & Vascular Erythema": "Compromised lipid permeability barrier with elevated micro-vascular flush in CIE-Lab a* space.",
-    "Combination & Hyperpigmentation": "Differential sebaceous distribution (shiny T-Zone, matte cheeks) with localized post-inflammatory melanin spots.",
-    "Balanced Eudermic": "Homeostatic barrier lipids, uniform stratum corneum micro-relief, and minimal vascular erythema."
-}
 default_avatar_path = os.path.join(BASE_DIR, "assets", "default_avatar.png")
 
 # Dynamic Step Progress Ribbon
@@ -154,8 +148,8 @@ st.markdown(f"""
         <div class="step-divider-line"></div>
         <a href="#step-4" style="text-decoration: none;">
             <div class="step-item {step4_active}">
-                <div class="step-num-badge" style="background: {'#10B981' if has_result else '#475569'};">4</div>
-                <div class="step-name">Clinical Results</div>
+                <div class="step-num-badge" style="background: {'#059669' if has_result else '#CBD5E1'};">4</div>
+                <div class="step-name">Clinical Verdict & Results</div>
             </div>
         </a>
     </div>
@@ -170,7 +164,7 @@ st.markdown("""
     <div class="section-badge">Step 01 • Dermal Radiance & Anthropometric Zoning</div>
     <div class="section-title">Facial Diagnostic Capture Studio</div>
     <div class="section-desc">
-        Upload a high-resolution frontal facial selfie to execute computer vision colorimetry and personalized cosmeceutical formulation.
+        Upload a high-resolution frontal facial selfie in natural daylight. SkinnAlgo applies anatomical landmark zoning, automatic lip vermillion masking, and specular colorimetry.
     </div>
 """, unsafe_allow_html=True)
 
@@ -191,13 +185,13 @@ with capture_col_left:
         st.info("💡 Tip: Upload a clear, well-lit photo looking straight at the camera. Neutral expression provides the highest landmark accuracy.")
 
 with capture_col_right:
-    st.markdown("<div style='font-size: 0.88rem; font-weight: 600; color: #94A3B8; margin-bottom: 0.5rem;'>Portrait Viewport</div>", unsafe_allow_html=True)
+    st.markdown("<div style='font-size: 0.88rem; font-weight: 700; color: #0F172A; margin-bottom: 0.5rem;'>Portrait Viewport</div>", unsafe_allow_html=True)
     if input_bgr is not None:
         display_rgb = cv2.cvtColor(input_bgr, cv2.COLOR_BGR2RGB)
         st.image(display_rgb, caption="Diagnostic Portrait Loaded", use_container_width=True)
         st.markdown("""
-            <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 6px 12px; margin-top: 6px;">
-                <span style="font-size: 0.78rem; color: #34D399; font-weight: 600;">● Biometric Alignment Calibrated</span>
+            <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 8px; padding: 6px 12px; margin-top: 6px;">
+                <span style="font-size: 0.78rem; color: #059669; font-weight: 700;">● Biometric Alignment Calibrated</span>
                 <span class="pill-badge pill-emerald">Ready</span>
             </div>
         """, unsafe_allow_html=True)
@@ -206,8 +200,8 @@ with capture_col_right:
             avatar_img = Image.open(default_avatar_path)
             st.image(avatar_img, caption="Awaiting Portrait Upload", use_container_width=True)
         st.markdown("""
-            <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(148, 163, 184, 0.1); border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 8px; padding: 6px 12px; margin-top: 6px;">
-                <span style="font-size: 0.78rem; color: #94A3B8;">○ Awaiting Portrait Upload</span>
+            <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.25); border-radius: 8px; padding: 6px 12px; margin-top: 6px;">
+                <span style="font-size: 0.78rem; color: #0284C7; font-weight: 600;">○ Awaiting Portrait Upload</span>
                 <span class="pill-badge pill-cyan">Awaiting</span>
             </div>
         """, unsafe_allow_html=True)
@@ -227,7 +221,6 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Default clinical indices
 default_wash_idx = 1
 default_barrier_idx = 2
 default_goal_idx = 0
@@ -236,10 +229,10 @@ intake_c1, intake_c2 = st.columns(2, gap="large")
 
 with intake_c1:
     st.markdown("""
-        <div style="font-size: 0.92rem; font-weight: 600; color: #F8FAFC; margin-bottom: 4px;">
+        <div style="font-size: 0.95rem; font-weight: 700; color: #0F172A; margin-bottom: 4px;">
             🧴 1. Skin Feel 2h Post-Cleansing
         </div>
-        <div style="font-size: 0.78rem; color: #94A3B8; margin-bottom: 6px;">
+        <div style="font-size: 0.80rem; color: #475569; margin-bottom: 6px;">
             Measures baseline sebaceous gland output vs transepidermal moisture retention.
         </div>
     """, unsafe_allow_html=True)
@@ -254,10 +247,10 @@ with intake_c1:
     st.markdown("<div style='height: 1.2rem;'></div>", unsafe_allow_html=True)
 
     st.markdown("""
-        <div style="font-size: 0.92rem; font-weight: 600; color: #F8FAFC; margin-bottom: 4px;">
+        <div style="font-size: 0.95rem; font-weight: 700; color: #0F172A; margin-bottom: 4px;">
             🛡️ 3. Dermal Reactivity & Barrier Health
         </div>
-        <div style="font-size: 0.78rem; color: #94A3B8; margin-bottom: 6px;">
+        <div style="font-size: 0.80rem; color: #475569; margin-bottom: 6px;">
             Triggers deterministic safety locks if stratum corneum is fragile or inflamed.
         </div>
     """, unsafe_allow_html=True)
@@ -271,10 +264,10 @@ with intake_c1:
 
 with intake_c2:
     st.markdown("""
-        <div style="font-size: 0.92rem; font-weight: 600; color: #F8FAFC; margin-bottom: 4px;">
+        <div style="font-size: 0.95rem; font-weight: 700; color: #0F172A; margin-bottom: 4px;">
             🌤️ 2. Ambient Climate & UV Exposure
         </div>
-        <div style="font-size: 0.78rem; color: #94A3B8; margin-bottom: 6px;">
+        <div style="font-size: 0.80rem; color: #475569; margin-bottom: 6px;">
             Factors environmental humidity, altitude dryness, and photo-aging risk.
         </div>
     """, unsafe_allow_html=True)
@@ -289,10 +282,10 @@ with intake_c2:
     st.markdown("<div style='height: 1.2rem;'></div>", unsafe_allow_html=True)
 
     st.markdown("""
-        <div style="font-size: 0.92rem; font-weight: 600; color: #F8FAFC; margin-bottom: 4px;">
+        <div style="font-size: 0.95rem; font-weight: 700; color: #0F172A; margin-bottom: 4px;">
             🎯 4. Primary Formulation Objective
         </div>
-        <div style="font-size: 0.78rem; color: #94A3B8; margin-bottom: 6px;">
+        <div style="font-size: 0.80rem; color: #475569; margin-bottom: 6px;">
             Guides active compound selection across the 28-ingredient knowledge graph.
         </div>
     """, unsafe_allow_html=True)
@@ -312,12 +305,12 @@ st.markdown("<div style='height: 1.8rem;'></div>", unsafe_allow_html=True)
 # =====================================================================
 st.markdown('<div id="step-3"></div>', unsafe_allow_html=True)
 st.markdown("""
-    <div class="glass-3d-card" style="text-align: center; padding: 2rem 1.5rem; border: 1px solid rgba(99, 102, 241, 0.35); background: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, rgba(15, 17, 26, 0.95) 70%);">
+    <div class="glass-3d-card" style="text-align: center; padding: 2rem 1.5rem; border: 1px solid rgba(14, 165, 233, 0.35); background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 253, 250, 0.95) 100%);">
         <div class="section-badge" style="justify-content: center;">Step 03 • AI Reasoning & Deterministic Constraint Solver</div>
-        <div style="font-size: 1.6rem; font-weight: 700; color: #F8FAFC; margin-bottom: 0.4rem; letter-spacing: -0.02em;">
+        <div style="font-size: 1.65rem; font-weight: 800; color: #0F172A; margin-bottom: 0.4rem; letter-spacing: -0.02em;">
             Ready to Synthesize Skin Intelligence
         </div>
-        <div style="font-size: 0.88rem; color: #94A3B8; max-width: 620px; margin: 0 auto 1.4rem auto; line-height: 1.5;">
+        <div style="font-size: 0.9rem; color: #475569; max-width: 620px; margin: 0 auto 1.4rem auto; line-height: 1.55;">
             Fuses CIE-Lab colorimetric decoupling, specular lipid reflectance physics, and Gemini 2.5 multimodal formulation with zero chemical collisions.
         </div>
         <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 1.5rem; flex-wrap: wrap;">
@@ -350,21 +343,21 @@ st.markdown("<div style='height: 1.8rem;'></div>", unsafe_allow_html=True)
 
 
 # =====================================================================
-# STEP 4: CLINICAL RESULTS & PRECISION REGIMEN STUDIO
+# STEP 4: CLINICAL RESULTS, VERDICT & REGIMEN STUDIO
 # =====================================================================
 st.markdown('<div id="step-4"></div>', unsafe_allow_html=True)
 st.markdown("""
     <div class="section-badge">Step 04 • Clinical Intelligence Studio</div>
-    <div class="section-title">Diagnostic Evaluation & Formulated Regimen</div>
+    <div class="section-title">Diagnostic Verdict & Formulated Regimen</div>
     <div class="section-desc">
-        Comprehensive computer vision colorimetry analysis, safety clearance, and individualized cosmeceutical protocols.
+        Comprehensive computer vision colorimetry analysis, executive clinical verdict, and individualized cosmeceutical protocols.
     </div>
 """, unsafe_allow_html=True)
 
 if st.session_state.analysis_result is None:
     render_empty_hero()
 
-    st.markdown("<div style='text-align: center; margin-bottom: 0.8rem; font-size: 0.85rem; color: #94A3B8; font-weight: 500;'>Or Test Instantly with a Pre-Calibrated Profile:</div>", unsafe_allow_html=True)
+    st.markdown("<div style='text-align: center; margin-bottom: 0.8rem; font-size: 0.88rem; color: #475569; font-weight: 600;'>Or Test Instantly with a Pre-Calibrated Profile:</div>", unsafe_allow_html=True)
     qc1, qc2, qc3, qc4 = st.columns(4)
 
     with qc1:
@@ -401,14 +394,17 @@ if st.session_state.analysis_result is None:
 
 else:
     cv_res: SkinAnalysisResult = st.session_state.analysis_result
+    intake: ClinicalIntakeData = st.session_state.intake_data
+    cross_val: IntakeCrossValidation = st.session_state.cross_val
+    regimen: FormulatedRegimen = st.session_state.regimen_result
 
     # Top Diagnostic Health Bar & Reset CTA
     top_c1, top_c2 = st.columns([6, 2])
     with top_c1:
         st.markdown(f"""
             <div style="display: flex; align-items: center; gap: 14px;">
-                <span style="font-size: 1.25rem; font-weight: 700; color: #F8FAFC;">Diagnostic Health Index: {cv_res.skin_health_index}/100</span>
-                <span class="pill-badge pill-violet">Primary Concern: {cv_res.primary_cv_concern}</span>
+                <span style="font-size: 1.35rem; font-weight: 800; color: #0F172A;">Diagnostic Health Index: {cv_res.skin_health_index}/100</span>
+                <span class="pill-badge pill-cyan">Primary Concern: {cv_res.primary_cv_concern}</span>
             </div>
         """, unsafe_allow_html=True)
     with top_c2:
@@ -419,23 +415,111 @@ else:
             st.session_state.cross_val = None
             st.rerun()
 
-    # Metric Gauges
+    # 4 KPI Diagnostic Metric Gauges
     render_metric_cards(cv_res)
 
     st.markdown("<div style='height: 1.2rem;'></div>", unsafe_allow_html=True)
 
+    # =====================================================================
+    # SECTION: EXECUTIVE CLINICAL DIAGNOSTIC VERDICT ("THE WHOLE PICTURE")
+    # =====================================================================
+    st.markdown(f"""
+        <div class="glass-3d-card" style="border-left: 5px solid #0284C7; padding: 1.5rem 1.8rem; margin-bottom: 1.6rem; background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 253, 250, 0.95) 100%);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
+                <span class="pill-badge pill-cyan">Clinical Diagnostic Verdict</span>
+                <span class="pill-badge pill-emerald">Dermal Tolerance: {cross_val.tolerance_rating}</span>
+            </div>
+            <div style="font-size: 1.35rem; font-weight: 800; color: #0F172A; margin-bottom: 0.4rem;">
+                {cross_val.reconciled_skin_type} — {cv_res.primary_cv_concern}
+            </div>
+            <div style="font-size: 0.92rem; color: #334155; line-height: 1.6; margin-bottom: 1rem;">
+                {regimen.skin_profile_summary}
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid rgba(14, 165, 233, 0.18);">
+                <div style="background: rgba(255, 255, 255, 0.8); padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(14, 165, 233, 0.18);">
+                    <div style="font-size: 0.72rem; color: #64748B; font-weight: 700; text-transform: uppercase;">1. Epidermal Barrier Status</div>
+                    <div style="font-size: 0.88rem; font-weight: 700; color: #0284C7; margin-top: 2px;">{cross_val.reconciled_skin_type}</div>
+                    <div style="font-size: 0.76rem; color: #475569; margin-top: 2px;">Lipid layer: {'Compromised' if cv_res.erythema.erythema_index > 0.35 else 'Homeostatic'}</div>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.8); padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(14, 165, 233, 0.18);">
+                    <div style="font-size: 0.72rem; color: #64748B; font-weight: 700; text-transform: uppercase;">2. Vascular Flushing</div>
+                    <div style="font-size: 0.88rem; font-weight: 700; color: #059669; margin-top: 2px;">{cv_res.erythema.erythema_severity}</div>
+                    <div style="font-size: 0.76rem; color: #475569; margin-top: 2px;">Flush Area: {cv_res.erythema.erythema_percentage:.1f}% of dermis</div>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.8); padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(14, 165, 233, 0.18);">
+                    <div style="font-size: 0.72rem; color: #64748B; font-weight: 700; text-transform: uppercase;">3. Follicular Micro-Relief</div>
+                    <div style="font-size: 0.88rem; font-weight: 700; color: #D97706; margin-top: 2px;">{cv_res.texture.texture_classification}</div>
+                    <div style="font-size: 0.76rem; color: #475569; margin-top: 2px;">Active lesions: {cv_res.texture.active_blemish_count} spots</div>
+                </div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
     # Main Tabs within Step 4
-    res_tab1, res_tab2, res_tab3, res_tab4 = st.tabs([
+    res_tab1, res_tab2, res_tab3, res_tab4, res_tab5 = st.tabs([
+        "Formulated Cosmeceutical Protocol",
         "Computer Vision & Colorimetry Lab",
-        "Formulated Cosmeceutical Regimen",
+        "User Guide & Clinical Instructions",
         "Chemical Knowledge Graph (28 Actives)",
-        "System Architecture & Clinical Science"
+        "System Architecture & Physics"
     ])
 
     # -------------------------------------------------------------
-    # TAB 1: CV & COLORIMETRY LAB
+    # TAB 1: FORMULATED REGIMEN
     # -------------------------------------------------------------
     with res_tab1:
+        # Safety Clearance
+        render_safety_banner(regimen.safety_clearance)
+
+        # Profile Summary Card
+        st.markdown(f"""
+            <div class="luxury-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                    <span class="pill-badge pill-violet">Engine: {regimen.engine_used}</span>
+                    <span class="pill-badge pill-cyan">Reconciled: {cross_val.reconciled_skin_type}</span>
+                </div>
+                <h3 style="margin: 0.2rem 0; font-size: 1.2rem; color: #0F172A;">Clinical Dermatological Protocol</h3>
+                <p style="color: #475569; font-size: 0.90rem; line-height: 1.6; margin-bottom: 0.5rem;">
+                    {regimen.skin_profile_summary}
+                </p>
+                <div style="font-size: 0.80rem; color: #64748B;">
+                    Evaluation Horizon: {regimen.expected_timeline_weeks} weeks • Tolerance Level: {cross_val.tolerance_rating}
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+
+        # AM / PM Routines Side by Side
+        col_am, col_pm = st.columns(2)
+
+        with col_am:
+            st.markdown("### ☀️ Morning (AM) Protocol")
+            render_routine_steps(regimen.am_routine, "am")
+
+        with col_pm:
+            st.markdown("### 🌙 Evening (PM) Protocol")
+            render_routine_steps(regimen.pm_routine, "pm")
+
+        # Clinical Notes
+        if regimen.clinical_precautions:
+            st.markdown("#### ⚠️ Clinical Precautions & Purging Guidance")
+            for p in regimen.clinical_precautions:
+                st.markdown(f"- {p}")
+
+        # Routine Download
+        st.markdown("---")
+        markdown_report = RoutineExporter.to_markdown(regimen, cv_res, intake, cross_val)
+        st.download_button(
+            label="Download Printable Clinical Regimen Report (.md)",
+            data=markdown_report,
+            file_name="SkinnAlgo_Clinical_Regimen.md",
+            mime="text/markdown",
+            use_container_width=True
+        )
+
+    # -------------------------------------------------------------
+    # TAB 2: CV & COLORIMETRY LAB
+    # -------------------------------------------------------------
+    with res_tab2:
         col_img1, col_img2 = st.columns(2)
         with col_img1:
             st.markdown("#### Original Portrait")
@@ -457,10 +541,10 @@ else:
         with b1:
             st.markdown(f"""
                 <div class="luxury-card">
-                    <h4 style="margin: 0 0 0.5rem 0; color: #22D3EE;">T-Zone vs U-Zone Sebum</h4>
-                    <p style="font-size: 0.82rem; color: #94A3B8;">
-                        • <strong>T-Zone (Forehead & Nose)</strong>: {cv_res.sebum.t_zone_sebum_score:.3f}<br>
-                        • <strong>U-Zone (Cheeks & Chin)</strong>: {cv_res.sebum.u_zone_sebum_score:.3f}<br>
+                    <h4 style="margin: 0 0 0.5rem 0; color: #0284C7;">T-Zone vs U-Zone Sebum</h4>
+                    <p style="font-size: 0.85rem; color: #475569;">
+                        • <strong>T-Zone Sebum</strong>: {cv_res.sebum.t_zone_sebum_score:.3f}<br>
+                        • <strong>U-Zone Sebum</strong>: {cv_res.sebum.u_zone_sebum_score:.3f}<br>
                         • <strong>Specular Ratio</strong>: {cv_res.sebum.specular_ratio * 100:.2f}% of pixels<br>
                         • <strong>Classification</strong>: {cv_res.sebum.sebum_classification}
                     </p>
@@ -469,8 +553,8 @@ else:
         with b2:
             st.markdown(f"""
                 <div class="luxury-card">
-                    <h4 style="margin: 0 0 0.5rem 0; color: #A78BFA;">CIE-Lab Colorimetry</h4>
-                    <p style="font-size: 0.82rem; color: #94A3B8;">
+                    <h4 style="margin: 0 0 0.5rem 0; color: #059669;">CIE-Lab Colorimetry</h4>
+                    <p style="font-size: 0.85rem; color: #475569;">
                         • <strong>Mean a* (Redness)</strong>: {cv_res.erythema.mean_a_star:.2f}<br>
                         • <strong>Erythema Index (EI)</strong>: {cv_res.erythema.erythema_index:.3f}<br>
                         • <strong>Micro-Flush Coverage</strong>: {cv_res.erythema.erythema_percentage:.1f}%<br>
@@ -481,8 +565,8 @@ else:
         with b3:
             st.markdown(f"""
                 <div class="luxury-card">
-                    <h4 style="margin: 0 0 0.5rem 0; color: #34D399;">Texture & Micro-Relief</h4>
-                    <p style="font-size: 0.82rem; color: #94A3B8;">
+                    <h4 style="margin: 0 0 0.5rem 0; color: #D97706;">Texture & Micro-Relief</h4>
+                    <p style="font-size: 0.85rem; color: #475569;">
                         • <strong>Laplacian Variance</strong>: {cv_res.texture.laplacian_variance:.1f}<br>
                         • <strong>Roughness Score</strong>: {cv_res.texture.roughness_score:.3f}<br>
                         • <strong>Active Blemishes</strong>: {cv_res.texture.active_blemish_count} spots<br>
@@ -492,68 +576,79 @@ else:
             """, unsafe_allow_html=True)
 
     # -------------------------------------------------------------
-    # TAB 2: FORMULATED REGIMEN
+    # TAB 3: USER GUIDE & CLINICAL INSTRUCTIONS
     # -------------------------------------------------------------
-    with res_tab2:
-        if st.session_state.regimen_result is None:
-            st.info("Regimen synthesis in progress...")
-        else:
-            regimen: FormulatedRegimen = st.session_state.regimen_result
-            intake: ClinicalIntakeData = st.session_state.intake_data
-            cross_val: IntakeCrossValidation = st.session_state.cross_val
+    with res_tab3:
+        st.markdown("### 📘 SkinnAlgo User Guide & Clinical Science Manual")
+        st.markdown("Understand the whole picture: how to capture optimal photos, how computer vision measures skin physics, and how to read your diagnostic verdict.")
 
-            # Safety Clearance
-            render_safety_banner(regimen.safety_clearance)
+        ug_col1, ug_col2 = st.columns(2, gap="large")
 
-            # Profile Summary Card
-            st.markdown(f"""
+        with ug_col1:
+            st.markdown("""
                 <div class="luxury-card">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
-                        <span class="pill-badge pill-violet">Engine: {regimen.engine_used}</span>
-                        <span class="pill-badge pill-cyan">Reconciled: {cross_val.reconciled_skin_type}</span>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 0.6rem;">
+                        <span style="font-size: 1.4rem;">📸</span>
+                        <h4 style="margin: 0; color: #0F172A;">1. Diagnostic Capture Best Practices</h4>
                     </div>
-                    <h3 style="margin: 0.2rem 0; font-size: 1.15rem; color: #F8FAFC;">Clinical Dermatological Assessment</h3>
-                    <p style="color: #94A3B8; font-size: 0.88rem; line-height: 1.6; margin-bottom: 0.5rem;">
-                        {regimen.skin_profile_summary}
-                    </p>
-                    <div style="font-size: 0.78rem; color: #64748B;">
-                        Evaluation Horizon: {regimen.expected_timeline_weeks} weeks • Tolerance: {cross_val.tolerance_rating}
-                    </div>
+                    <ul style="font-size: 0.86rem; color: #334155; line-height: 1.6; padding-left: 1.2rem;">
+                        <li><strong>Lighting:</strong> Shoot in natural, indirect daylight or diffuse 5500K neutral light. Avoid yellow incandescent bulbs or harsh flash that create false specular hot-spots.</li>
+                        <li><strong>Dermal Preparation:</strong> Perform diagnostics 1.5 to 2 hours post-wash without active creams, oils, or makeup. This allows sebaceous glands to reach baseline excretion.</li>
+                        <li><strong>Framing:</strong> Keep eyes open, neutral expression, and chin parallel to the camera. If uploading a macro close-up (cheeks/nose), ensure natural focus without motion blur.</li>
+                    </ul>
                 </div>
             """, unsafe_allow_html=True)
 
-            # AM / PM Routines Side by Side
-            col_am, col_pm = st.columns(2)
+            st.markdown("""
+                <div class="luxury-card">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 0.6rem;">
+                        <span style="font-size: 1.4rem;">📊</span>
+                        <h4 style="margin: 0; color: #0F172A;">3. Reading Your Diagnostic Scores</h4>
+                    </div>
+                    <ul style="font-size: 0.86rem; color: #334155; line-height: 1.6; padding-left: 1.2rem;">
+                        <li><strong>Sebum Index (0.0 to 1.0):</strong> Matte (&lt;0.20), Balanced (0.20–0.30), Combination (0.30–0.45), Hyperseborrhea (&gt;0.45).</li>
+                        <li><strong>Erythema Index (0.0 to 1.0):</strong> Calm (&lt;0.20), Moderate Flush (0.20–0.40), Reactive Vascular Flare (&gt;0.40).</li>
+                        <li><strong>Texture & Lesions:</strong> Glass Skin (0–2 spots), Moderate Texture (3–6 spots), Congested Flare (&gt;6 spots).</li>
+                        <li><strong>Skin Health Index (0 to 100):</strong> Baseline composite health deducting points for active inflammation, barrier breakdown, and lipid imbalances.</li>
+                    </ul>
+                </div>
+            """, unsafe_allow_html=True)
 
-            with col_am:
-                st.markdown("### ☀️ Morning (AM) Protocol")
-                render_routine_steps(regimen.am_routine, "am")
+        with ug_col2:
+            st.markdown("""
+                <div class="luxury-card">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 0.6rem;">
+                        <span style="font-size: 1.4rem;">🔬</span>
+                        <h4 style="margin: 0; color: #0F172A;">2. How Computer Vision Analyzes Your Skin</h4>
+                    </div>
+                    <ul style="font-size: 0.86rem; color: #334155; line-height: 1.6; padding-left: 1.2rem;">
+                        <li><strong>CIE-Lab a* Chrominance:</strong> Decouples melanin baseline (L*) from capillary blood vessels (a*), ensuring fair assessment across all Fitzpatrick phototypes I through VI.</li>
+                        <li><strong>HSV Specular Reflectance:</strong> Isolates mirror-like shine from sebaceous gland lipid output ($V \\ge 205, S \\le 60$) across T-Zone and U-Zone landmarks.</li>
+                        <li><strong>High-Frequency Laplacian Variance:</strong> Computes spatial second derivatives ($\\sigma^2$) across dermal relief to separate smooth glass skin from follicular congestion.</li>
+                        <li><strong>Lip & Mucosal Boundary Masking:</strong> Automatically isolates the vermillion lip border so natural lip color is never falsely circled as acne papules.</li>
+                    </ul>
+                </div>
+            """, unsafe_allow_html=True)
 
-            with col_pm:
-                st.markdown("### 🌙 Evening (PM) Protocol")
-                render_routine_steps(regimen.pm_routine, "pm")
-
-            # Clinical Notes
-            if regimen.clinical_precautions:
-                st.markdown("#### ⚠️ Clinical Precautions & Purging Guidance")
-                for p in regimen.clinical_precautions:
-                    st.markdown(f"- {p}")
-
-            # Routine Download
-            st.markdown("---")
-            markdown_report = RoutineExporter.to_markdown(regimen, cv_res, intake, cross_val)
-            st.download_button(
-                label="Download Printable Clinical Regimen Report (.md)",
-                data=markdown_report,
-                file_name="SkinnAlgo_Clinical_Regimen.md",
-                mime="text/markdown",
-                use_container_width=True
-            )
+            st.markdown("""
+                <div class="luxury-card">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 0.6rem;">
+                        <span style="font-size: 1.4rem;">🛡️</span>
+                        <h4 style="margin: 0; color: #0F172A;">4. Biochemical Safety Enforcement</h4>
+                    </div>
+                    <ul style="font-size: 0.86rem; color: #334155; line-height: 1.6; padding-left: 1.2rem;">
+                        <li><strong>Zero Acid + Retinoid Collisions:</strong> Hard deterministic rule graph intercepts simultaneous application of strong AHAs/BHAs with Adapalene or Retinol.</li>
+                        <li><strong>Redox Conflict Shielding:</strong> Prevents pure Vitamin C (L-Ascorbic Acid) from degrading into pro-inflammatory byproducts when paired with Benzoyl Peroxide.</li>
+                        <li><strong>Compromised Barrier Override:</strong> If barrier reactivity is severe or Erythema Index &gt; 0.40, direct exfoliants are halted and replaced with a 14-day lipid restoration protocol.</li>
+                        <li><strong>Mandatory Broad-Spectrum SPF 50+:</strong> Automatically enforced in every morning regimen whenever photosensitizing actives are prescribed.</li>
+                    </ul>
+                </div>
+            """, unsafe_allow_html=True)
 
     # -------------------------------------------------------------
-    # TAB 3: KNOWLEDGE GRAPH
+    # TAB 4: KNOWLEDGE GRAPH
     # -------------------------------------------------------------
-    with res_tab3:
+    with res_tab4:
         st.markdown("### 🧪 Cosmeceutical Knowledge Graph Directory")
         st.markdown("Browse all 28 clinical-grade active compounds, their biochemical Mechanisms of Action (MOA), pH stability, and contraindications.")
 
@@ -586,12 +681,12 @@ else:
             render_compound_card(comp)
 
     # -------------------------------------------------------------
-    # TAB 4: SYSTEM ARCHITECTURE & CLINICAL SCIENCE
+    # TAB 5: SYSTEM ARCHITECTURE & CLINICAL SCIENCE
     # -------------------------------------------------------------
-    with res_tab4:
+    with res_tab5:
         st.markdown("### 📐 Technical Architecture & Clinical Science")
         st.markdown("""
-            SkinnAlgo is engineered to bridge **applied computer vision**, **deterministic safety constraint satisfaction**, and **multimodal generative synthesis**.
+            SkinnAlgo bridges **applied computer vision**, **deterministic safety constraint satisfaction**, and **multimodal generative synthesis**.
         """)
 
         st.markdown("""

@@ -1,11 +1,11 @@
 """
-Apple/iOS Luxury Styling System for SkinnAlgo.
-Implements dark obsidian aesthetics, subtle ambient gradients, and crisp typography.
+Coastal Marine & Sea-Blue / Sea-Green Biotech Styling System for SkinnAlgo.
+Implements light aquatic luxury aesthetic, crystal clear ocean typography, and zero dark mode.
 """
 
 LUXURY_CSS = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap');
 
 html {
     scroll-behavior: smooth;
@@ -13,7 +13,7 @@ html {
 
 html, body, p, h1, h2, h3, h4, h5, h6, label, input, textarea, select, button, div.stMarkdown, div.stText {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    color: #F1F5F9;
+    color: #0F172A;
 }
 
 /* Ensure Streamlit Material Icon ligatures and SVGs are never overridden */
@@ -27,17 +27,21 @@ html, body, p, h1, h2, h3, h4, h5, h6, label, input, textarea, select, button, d
     align-items: center !important;
     gap: 8px !important;
     white-space: nowrap !important;
+    background: linear-gradient(135deg, #0284C7 0%, #0D9488 100%) !important;
+    color: #FFFFFF !important;
+    border-radius: 10px !important;
+    border: none !important;
 }
 
-/* Base App Obsidian Background */
+/* Base App Coastal Water Sea-Blue & Sea-Green Background (NO DARK MODE) */
 .stApp {
-    background-color: #0c0d12 !important;
+    background-color: #F8FAFC !important;
     background-image: 
-        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99, 102, 241, 0.12) 0%, rgba(12, 13, 18, 0.98) 60%, #090a0e 100%) !important;
+        radial-gradient(ellipse 90% 60% at 50% -10%, rgba(14, 165, 233, 0.16) 0%, rgba(16, 185, 129, 0.09) 45%, #F8FAFC 85%) !important;
     background-attachment: fixed !important;
 }
 
-/* Precision Sleek Scrollbars */
+/* Precision Oceanic Scrollbars */
 ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -46,11 +50,11 @@ html, body, p, h1, h2, h3, h4, h5, h6, label, input, textarea, select, button, d
     background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-    background: #1e2230;
+    background: #CBD5E1;
     border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: #31384e;
+    background: #0284C7;
 }
 
 /* Flagship Header & Branding */
@@ -72,36 +76,37 @@ html, body, p, h1, h2, h3, h4, h5, h6, label, input, textarea, select, button, d
     width: 68px;
     height: 68px;
     border-radius: 20px;
-    background: radial-gradient(circle at 50% 30%, rgba(99, 102, 241, 0.25) 0%, rgba(20, 22, 32, 0.95) 75%);
-    border: 1px solid rgba(99, 102, 241, 0.4);
-    box-shadow: 0 0 32px rgba(99, 102, 241, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.18) 0%, rgba(16, 185, 129, 0.22) 100%);
+    border: 1px solid rgba(14, 165, 233, 0.4);
+    box-shadow: 0 8px 32px rgba(14, 165, 233, 0.22);
     margin-bottom: 16px;
 }
 
 .brand-title {
     font-size: 2.8rem;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: -0.035em;
-    color: #F8FAFC;
+    color: #0F172A;
     margin-bottom: 0.3rem;
 }
 
 .brand-subtitle {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Plus Jakarta Sans", sans-serif;
     font-size: 1.05rem;
-    color: #94A3B8;
+    color: #475569;
     margin-bottom: 1.2rem;
     letter-spacing: -0.01em;
     max-width: 650px;
     margin-left: auto;
     margin-right: auto;
+    line-height: 1.55;
 }
 
 /* Flagship Feature Action Cards */
 .hero-action-card {
-    background: rgba(20, 23, 33, 0.7);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(14, 165, 233, 0.22);
     border-radius: 14px;
     padding: 1.2rem 1.4rem;
     margin-bottom: 0.85rem;
@@ -109,36 +114,40 @@ html, body, p, h1, h2, h3, h4, h5, h6, label, input, textarea, select, button, d
     display: flex;
     align-items: center;
     justify-content: space-between;
+    box-shadow: 0 4px 16px rgba(14, 165, 233, 0.06);
 }
 .hero-action-card:hover {
-    background: rgba(26, 30, 44, 0.85);
-    border-color: rgba(99, 102, 241, 0.4);
-    transform: translateY(-1px);
-    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.5);
+    background: #FFFFFF;
+    border-color: rgba(14, 165, 233, 0.45);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px -4px rgba(14, 165, 233, 0.18);
 }
 
-/* Glassmorphism Card Container */
+/* Glassmorphism Card Container (Sea-Blue & Sea-Green Accent) */
 .luxury-card {
-    background: #131620;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(14, 165, 233, 0.2);
+    border-radius: 16px;
     padding: 1.4rem 1.6rem;
     margin-bottom: 1.2rem;
-    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
-    transition: border-color 0.2s ease;
+    box-shadow: 0 6px 24px -2px rgba(14, 165, 233, 0.08), 0 2px 8px rgba(16, 185, 129, 0.04);
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .luxury-card:hover {
-    border-color: #383F54;
+    border-color: rgba(14, 165, 233, 0.4);
+    box-shadow: 0 12px 32px -4px rgba(14, 165, 233, 0.16);
+    transform: translateY(-2px);
 }
 
 /* KPI Metric Meter Box */
 .metric-box {
-    background: #10131A;
-    border: 1px solid #1E2330;
-    border-radius: 12px;
-    padding: 1rem 1.2rem;
+    background: #FFFFFF;
+    border: 1px solid rgba(14, 165, 233, 0.22);
+    border-radius: 14px;
+    padding: 1.1rem 1.3rem;
     text-align: left;
+    box-shadow: 0 4px 18px rgba(14, 165, 233, 0.07);
 }
 
 .metric-title {
@@ -146,21 +155,21 @@ html, body, p, h1, h2, h3, h4, h5, h6, label, input, textarea, select, button, d
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: #64748B;
-    font-weight: 600;
+    font-weight: 700;
     margin-bottom: 0.3rem;
 }
 
 .metric-val {
-    font-size: 1.65rem;
-    font-weight: 700;
+    font-size: 1.7rem;
+    font-weight: 800;
     letter-spacing: -0.02em;
-    color: #F8FAFC;
+    color: #0284C7;
     line-height: 1.2;
 }
 
 .metric-subtitle {
     font-size: 0.78rem;
-    color: #94A3B8;
+    color: #475569;
     margin-top: 0.25rem;
 }
 
@@ -170,83 +179,84 @@ html, body, p, h1, h2, h3, h4, h5, h6, label, input, textarea, select, button, d
     padding: 0.25rem 0.65rem;
     border-radius: 9999px;
     font-size: 0.72rem;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.02em;
     text-transform: uppercase;
 }
 
 .pill-cyan {
-    background: rgba(6, 182, 212, 0.12);
-    color: #22D3EE;
-    border: 1px solid rgba(6, 182, 212, 0.3);
-}
-
-.pill-violet {
-    background: rgba(139, 92, 246, 0.12);
-    color: #A78BFA;
-    border: 1px solid rgba(139, 92, 246, 0.3);
+    background: rgba(14, 165, 233, 0.12);
+    color: #0284C7;
+    border: 1px solid rgba(14, 165, 233, 0.35);
 }
 
 .pill-emerald {
     background: rgba(16, 185, 129, 0.12);
-    color: #34D399;
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #059669;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.pill-violet {
+    background: rgba(124, 58, 237, 0.10);
+    color: #7C3AED;
+    border: 1px solid rgba(124, 58, 237, 0.3);
 }
 
 .pill-rose {
-    background: rgba(244, 63, 94, 0.12);
-    color: #FB7185;
-    border: 1px solid rgba(244, 63, 94, 0.3);
+    background: rgba(225, 29, 72, 0.10);
+    color: #E11D48;
+    border: 1px solid rgba(225, 29, 72, 0.3);
 }
 
 .pill-amber {
-    background: rgba(245, 158, 11, 0.12);
-    color: #FBBF24;
-    border: 1px solid rgba(245, 158, 11, 0.3);
+    background: rgba(217, 119, 6, 0.10);
+    color: #D97706;
+    border: 1px solid rgba(217, 119, 6, 0.3);
 }
 
 /* Routine Step Timeline Card */
 .routine-step {
-    background: #141720;
-    border-left: 3px solid #6366F1;
-    border-top: 1px solid #232734;
-    border-right: 1px solid #232734;
-    border-bottom: 1px solid #232734;
-    border-radius: 0 12px 12px 0;
+    background: #FFFFFF;
+    border-left: 4px solid #0284C7;
+    border-top: 1px solid rgba(14, 165, 233, 0.18);
+    border-right: 1px solid rgba(14, 165, 233, 0.18);
+    border-bottom: 1px solid rgba(14, 165, 233, 0.18);
+    border-radius: 0 14px 14px 0;
     padding: 1.1rem 1.3rem;
     margin-bottom: 0.9rem;
+    box-shadow: 0 4px 14px rgba(14, 165, 233, 0.06);
 }
 
 .step-num {
     font-size: 0.75rem;
     font-weight: 700;
-    color: #818CF8;
+    color: #0284C7;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
 .step-compound {
     font-size: 1.15rem;
-    font-weight: 600;
-    color: #F8FAFC;
+    font-weight: 700;
+    color: #0F172A;
     margin: 0.15rem 0 0.3rem 0;
 }
 
 .step-moa {
     font-size: 0.84rem;
-    color: #94A3B8;
+    color: #475569;
     line-height: 1.5;
     margin-bottom: 0.6rem;
 }
 
 .search-box {
-    background: #0B0D13;
-    border: 1px solid #1E2330;
-    border-radius: 6px;
+    background: #F0FDF4;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 8px;
     padding: 0.45rem 0.75rem;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-size: 0.76rem;
-    color: #38BDF8;
+    color: #059669;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -264,7 +274,7 @@ html, body, p, h1, h2, h3, h4, h5, h6, label, input, textarea, select, button, d
     justify-content: center;
     gap: 16px;
     margin: 1.5rem auto 2.5rem auto;
-    max-width: 720px;
+    max-width: 760px;
 }
 
 .step-item {
@@ -273,23 +283,23 @@ html, body, p, h1, h2, h3, h4, h5, h6, label, input, textarea, select, button, d
     gap: 10px;
     padding: 8px 18px;
     border-radius: 9999px;
-    background: rgba(22, 26, 38, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(12px);
+    background: #FFFFFF;
+    border: 1px solid rgba(14, 165, 233, 0.22);
+    box-shadow: 0 2px 8px rgba(14, 165, 233, 0.08);
     transition: all 0.3s ease;
 }
 
 .step-item.active {
-    background: rgba(99, 102, 241, 0.18);
-    border-color: rgba(99, 102, 241, 0.5);
-    box-shadow: 0 0 20px rgba(99, 102, 241, 0.25);
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(16, 185, 129, 0.12) 100%);
+    border-color: #0284C7;
+    box-shadow: 0 0 20px rgba(14, 165, 233, 0.25);
 }
 
 .step-num-badge {
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
-    background: #6366F1;
+    background: linear-gradient(135deg, #0284C7 0%, #0D9488 100%);
     color: #FFFFFF;
     font-size: 0.72rem;
     font-weight: 700;
@@ -301,32 +311,32 @@ html, body, p, h1, h2, h3, h4, h5, h6, label, input, textarea, select, button, d
 .step-name {
     font-size: 0.82rem;
     font-weight: 600;
-    color: #F8FAFC;
+    color: #0F172A;
     letter-spacing: -0.01em;
 }
 
 .step-divider-line {
     flex: 1;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.1);
+    height: 2px;
+    background: linear-gradient(90deg, rgba(14, 165, 233, 0.3), rgba(16, 185, 129, 0.3));
     max-width: 40px;
 }
 
 /* 3D Luxury Glass Card */
 .glass-3d-card {
-    background: linear-gradient(135deg, rgba(20, 24, 36, 0.85) 0%, rgba(12, 14, 22, 0.95) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.09);
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(14, 165, 233, 0.22);
     border-radius: 18px;
     padding: 1.6rem 1.8rem;
     margin-bottom: 1.6rem;
-    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.12);
+    box-shadow: 0 12px 36px -10px rgba(14, 165, 233, 0.14), 0 2px 8px rgba(16, 185, 129, 0.06);
     backdrop-filter: blur(16px);
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-3d-card:hover {
-    border-color: rgba(99, 102, 241, 0.35);
-    box-shadow: 0 24px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(99, 102, 241, 0.15);
+    border-color: rgba(14, 165, 233, 0.45);
+    box-shadow: 0 18px 45px -10px rgba(14, 165, 233, 0.22), 0 0 24px rgba(16, 185, 129, 0.1);
     transform: translateY(-2px);
 }
 
@@ -334,48 +344,48 @@ html, body, p, h1, h2, h3, h4, h5, h6, label, input, textarea, select, button, d
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 0.72rem;
+    font-size: 0.74rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: #818CF8;
+    color: #0284C7;
     margin-bottom: 0.5rem;
 }
 
 .section-title {
-    font-size: 1.45rem;
+    font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: -0.03em;
-    color: #F8FAFC;
+    color: #0F172A;
     margin-bottom: 0.3rem;
 }
 
 .section-desc {
-    font-size: 0.88rem;
-    color: #94A3B8;
+    font-size: 0.9rem;
+    color: #475569;
     margin-bottom: 1.2rem;
-    line-height: 1.5;
+    line-height: 1.55;
 }
 
-/* Sleek Luxury Button Styling */
+/* Sleek Sea-Blue to Sea-Green Button Styling */
 .stButton > button {
-    background: linear-gradient(180deg, #4F46E5 0%, #4338CA 100%) !important;
+    background: linear-gradient(135deg, #0284C7 0%, #0D9488 100%) !important;
     color: #FFFFFF !important;
     font-weight: 600 !important;
-    font-size: 0.92rem !important;
+    font-size: 0.94rem !important;
     border-radius: 12px !important;
-    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
     padding: 0.7rem 1.8rem !important;
     letter-spacing: -0.01em !important;
-    box-shadow: 0 8px 24px rgba(79, 70, 229, 0.4) !important;
+    box-shadow: 0 6px 20px rgba(14, 165, 233, 0.35) !important;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .stButton > button:hover {
-    background: linear-gradient(180deg, #6366F1 0%, #4F46E5 100%) !important;
+    background: linear-gradient(135deg, #0369A1 0%, #0F766E 100%) !important;
     transform: translateY(-2px) !important;
-    box-shadow: 0 12px 30px rgba(99, 102, 241, 0.55) !important;
-    border-color: rgba(255, 255, 255, 0.35) !important;
+    box-shadow: 0 10px 28px rgba(14, 165, 233, 0.45) !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
 }
 
 .stButton > button:active {
@@ -385,13 +395,13 @@ html, body, p, h1, h2, h3, h4, h5, h6, label, input, textarea, select, button, d
 /* Tabs Header */
 .stTabs [data-baseweb="tab-list"] {
     gap: 1.5rem;
-    border-bottom: 1px solid #1E2330;
+    border-bottom: 1px solid rgba(14, 165, 233, 0.2);
     padding-bottom: 0.3rem;
 }
 
 .stTabs [data-baseweb="tab"] {
     color: #64748B;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 0.92rem;
     padding: 0.5rem 0;
     background-color: transparent !important;
@@ -399,9 +409,9 @@ html, body, p, h1, h2, h3, h4, h5, h6, label, input, textarea, select, button, d
 }
 
 .stTabs [aria-selected="true"] {
-    color: #F8FAFC !important;
-    font-weight: 600 !important;
-    border-bottom: 2px solid #6366F1 !important;
+    color: #0284C7 !important;
+    font-weight: 700 !important;
+    border-bottom: 2px solid #0284C7 !important;
 }
 
 /* Remove default Streamlit top padding & preserve center canvas */
@@ -431,4 +441,3 @@ def inject_luxury_styles():
     """Inject luxury CSS into the Streamlit session."""
     import streamlit as st
     st.markdown(LUXURY_CSS, unsafe_allow_html=True)
-

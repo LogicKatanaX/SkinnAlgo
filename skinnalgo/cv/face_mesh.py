@@ -24,6 +24,8 @@ class FacialROIs:
     t_zone_polygons: List[np.ndarray]
     u_zone_polygons: List[np.ndarray]
     landmarks: Optional[np.ndarray] = None
+    is_macro_closeup: bool = False
+    lip_mask: Optional[np.ndarray] = None
 
 
 class FaceROISegmenter:
@@ -66,6 +68,56 @@ class FaceROISegmenter:
         cleaned = cv2.morphologyEx(combined, cv2.MORPH_OPEN, kernel, iterations=1)
         cleaned = cv2.morphologyEx(cleaned, cv2.MORPH_CLOSE, kernel, iterations=1)
         return cleaned
+
+    def extract_lip_mask(self, bgr_img: np.ndarray) -> np.ndarray:
+        """
+        Extract anatomical lip and vermillion border mask.
+        Prevents natural mucosal redness from being misclassified as
+        erythema flares or active acne papules.
+        """
+        ycrcb = cv2.cvtColor(bgr_img, cv2.COLOR_BGR2YCrCb)
+        lab = cv2.cvtColor(bgr_img, cv2.COLOR_BGR2Lab)
+
+        # Lip chrominance: high Cr (>156) combined with high a* (>142)
+        raw_lips = (ycrcb[:, :, 1] > 156) & (lab[:, :, 1] > 142)
+        lip_bin = raw_lips.astype(np.uint8) * 255
+
+        cnts, _ = cv2.findContours(lip_bin, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        clean_mask = np.zeros_like(lip_bin)
+        for c in cnts:
+            area = cv2.contourArea(c)
+            bx, by, bw, bh = cv2.boundingRect(c)
+            # Anatomical lips form clustered regions (area > 350 and width > 30)
+            if area > 350 and bw > 30:
+                cv2.drawContours(clean_mask, [c], -1, 255, -1)
+
+        # Smooth and dilate slightly to encompass vermillion boundary
+        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (9, 9))
+        clean_mask = cv2.morphologyEx(clean_mask, cv2.MORPH_CLOSE, kernel)
+        clean_mask = cv2.dilate(clean_mask, kernel, iterations=1)
+        return clean_mask
+
+    def is_closeup_crop(self, bgr_img: np.ndarray) -> bool:
+        """
+        Detect whether input image is a localized macro dermal scan
+        (e.g., zoomed in on cheek, nose, or mouth) rather than a full frontal portrait.
+        """
+        h, w = bgr_img.shape[:2]
+        has_cascade_face = False
+        if self.face_cascade is not None:
+            try:
+                gray = cv2.cvtColor(bgr_img, cv2.COLOR_BGR2GRAY)
+                faces = self.face_cascade.detectMultiScale(
+                    gray, scaleFactor=1.1, minNeighbors=4, minSize=(int(w * 0.25), int(h * 0.25))
+                )
+                if len(faces) > 0:
+                    has_cascade_face = True
+            except Exception:
+                pass
+
+        skin_mask = self.extract_skin_mask(bgr_img)
+        skin_coverage = np.count_nonzero(skin_mask) / float(h * w)
+        return (not has_cascade_face) and (skin_coverage > 0.60)
 
     def detect_face(self, bgr_img: np.ndarray) -> Tuple[int, int, int, int]:
         """
@@ -203,6 +255,13 @@ class FaceROISegmenter:
         cv2.fillConvexPoly(u_mask, chin_pts, 255)
 
         skin_mask = self.extract_skin_mask(bgr_img)
+        lip_mask = self.extract_lip_mask(bgr_img)
+        is_macro = self.is_closeup_crop(bgr_img)
+
+        # Suppress anatomical lips from skin and U-Zone / chin dermis
+        if np.count_nonzero(lip_mask) > 0:
+            skin_mask = cv2.bitwise_and(skin_mask, cv2.bitwise_not(lip_mask))
+            u_mask = cv2.bitwise_and(u_mask, cv2.bitwise_not(lip_mask))
 
         # Refine ROI masks with skin locus intersection if skin pixels detected
         if np.count_nonzero(skin_mask) > 100:
@@ -214,6 +273,23 @@ class FaceROISegmenter:
             if np.count_nonzero(u_refined) > 50:
                 u_mask = u_refined
 
+        # For macro closeup dermal shots, eliminate fake forehead/chin polygons
+        if is_macro:
+            # Central dermal focus and lateral cheek focus
+            cw = int(w_img * 0.44)
+            ch = int(h_img * 0.44)
+            cx0 = int((w_img - cw) / 2)
+            cy0 = int(h_img * 0.15)
+            macro_central = np.array([
+                [cx0, cy0], [cx0 + cw, cy0],
+                [cx0 + cw, cy0 + ch], [cx0, cy0 + ch]
+            ], dtype=np.int32)
+            t_polys = [macro_central]
+            u_polys = [l_cheek_pts, r_cheek_pts]
+        else:
+            t_polys = [forehead_pts, nose_pts]
+            u_polys = [l_cheek_pts, r_cheek_pts, chin_pts]
+
         return FacialROIs(
             face_box=(fx, fy, fw, fh),
             t_zone_mask=t_mask,
@@ -224,6 +300,8 @@ class FaceROISegmenter:
             left_cheek_roi=(l_cheek_x, l_cheek_y, l_cheek_w, l_cheek_h),
             right_cheek_roi=(r_cheek_x, r_cheek_y, r_cheek_w, r_cheek_h),
             chin_roi=(chin_x, chin_y, chin_w, chin_h),
-            t_zone_polygons=[forehead_pts, nose_pts],
-            u_zone_polygons=[l_cheek_pts, r_cheek_pts, chin_pts]
+            t_zone_polygons=t_polys,
+            u_zone_polygons=u_polys,
+            is_macro_closeup=is_macro,
+            lip_mask=lip_mask
         )

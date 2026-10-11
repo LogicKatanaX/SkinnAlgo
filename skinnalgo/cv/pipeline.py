@@ -104,16 +104,16 @@ class SkinCVPipeline:
             cv2.circle(clean_view, (cx, cy), r + 2, color, 2, cv2.LINE_AA)
             cv2.circle(overlay, (cx, cy), 2, color, -1, cv2.LINE_AA)
 
-        # Annotate Zone Labels with sleek background badges
+        # Annotate Zone Labels with sleek badges
         font = cv2.FONT_HERSHEY_SIMPLEX
-        fx, fy, fw, fh = rois.face_box
-
-        # T-Zone Label
-        cv2.putText(overlay, "T-ZONE (SEBUM FOCUS)", (rois.forehead_roi[0], max(20, rois.forehead_roi[1] - 8)),
-                    font, 0.45, (240, 200, 30), 1, cv2.LINE_AA)
-        # U-Zone Label
-        cv2.putText(overlay, "U-ZONE (BARRIER & ERYTHEMA)", (rois.left_cheek_roi[0], max(20, rois.left_cheek_roi[1] - 8)),
-                    font, 0.45, (230, 110, 180), 1, cv2.LINE_AA)
+        if rois.is_macro_closeup:
+            cv2.putText(overlay, "MACRO DERMAL FIELD (TARGET SCAN)", (max(14, rois.forehead_roi[0]), 26),
+                        font, 0.45, (240, 200, 30), 1, cv2.LINE_AA)
+        else:
+            cv2.putText(overlay, "T-ZONE (SEBUM FOCUS)", (rois.forehead_roi[0], max(20, rois.forehead_roi[1] - 8)),
+                        font, 0.45, (240, 200, 30), 1, cv2.LINE_AA)
+            cv2.putText(overlay, "U-ZONE (BARRIER & ERYTHEMA)", (rois.left_cheek_roi[0], max(20, rois.left_cheek_roi[1] - 8)),
+                        font, 0.45, (230, 110, 180), 1, cv2.LINE_AA)
 
         return clean_view, overlay
 
@@ -145,10 +145,11 @@ class SkinCVPipeline:
             full_face_mask
         )
 
-        # 4. Texture and Blemish
+        # 4. Texture and Blemish (with lip suppression)
         texture_res = self.texture_analyzer.analyze(
             bgr_img,
-            full_face_mask
+            full_face_mask,
+            lip_mask=rois.lip_mask
         )
 
         # 5. Composite Skin Health Index (0 to 100, where 100 is pristine calm balanced skin)
