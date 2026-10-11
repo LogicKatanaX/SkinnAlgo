@@ -28,6 +28,13 @@ class GeminiRegimenRecommender:
     """
 
     def __init__(self, api_key: Optional[str] = None):
+        if not api_key:
+            try:
+                import streamlit as st
+                if hasattr(st, "secrets") and "GEMINI_API_KEY" in st.secrets:
+                    api_key = st.secrets["GEMINI_API_KEY"]
+            except Exception:
+                pass
         self.api_key = api_key or os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
         self.client = None
         if self.api_key:

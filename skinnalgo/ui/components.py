@@ -13,12 +13,72 @@ from skinnalgo.chemistry.safety_engine import SafetyEngineValidationResult
 
 
 def render_header():
-    """Renders the top branding header with luxury typography."""
+    """Renders the top branding header with luxury typography and badges."""
     st.markdown("""
-        <div style="margin-bottom: 1.5rem;">
-            <div class="brand-title">SkinnAlgo</div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.8rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.07);">
+            <div style="display: flex; align-items: center; gap: 14px;">
+                <div style="width: 44px; height: 44px; border-radius: 13px; background: radial-gradient(circle at 35% 30%, rgba(99, 102, 241, 0.35) 0%, rgba(20, 22, 32, 0.95) 75%); border: 1px solid rgba(99, 102, 241, 0.45); display: flex; align-items: center; justify-content: center; font-size: 1.35rem; box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);">
+                    🔬
+                </div>
+                <div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 1.45rem; font-weight: 700; letter-spacing: -0.03em; color: #F8FAFC;">SkinnAlgo</span>
+                        <span style="font-size: 0.68rem; font-weight: 600; padding: 2px 7px; border-radius: 9999px; background: rgba(99, 102, 241, 0.15); color: #818CF8; border: 1px solid rgba(99, 102, 241, 0.3);">v1.2</span>
+                    </div>
+                    <div style="font-size: 0.8rem; color: #64748B; margin-top: 2px;">
+                        Multimodal Skin Condition Intelligence & Cosmeceutical Compound Recommender
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <span class="pill-badge pill-emerald">Deterministic Clearance</span>
+                <span class="pill-badge pill-cyan">CIE-Lab Colorimetry</span>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+
+def render_empty_hero():
+    """Renders the flagship empty state studio with luxury action cards."""
+    st.markdown("""
+        <div class="brand-hero-container">
+            <div class="brand-avatar-wrapper">
+                <span style="font-size: 2rem;">🔬</span>
+            </div>
+            <div class="brand-title">Where should we begin?</div>
             <div class="brand-subtitle">
-                Applied Multimodal Intelligence & Cosmeceutical Compound Recommender
+                Upload a facial portrait or select a clinical preset profile in the sidebar to run anthropometric landmark zoning, specular lipid quantification, and formulated cosmeceutical synthesis.
+            </div>
+        </div>
+        
+        <div style="max-width: 820px; margin: 0 auto 2.5rem auto;">
+            <div class="hero-action-card">
+                <div>
+                    <div style="font-weight: 600; color: #F8FAFC; font-size: 0.95rem; margin-bottom: 2px;">Sebum & Lipid Sheen Analysis</div>
+                    <div style="font-size: 0.82rem; color: #94A3B8;">HSV specular reflectance isolates sebaceous gland activity across T-Zone and U-Zone landmarks.</div>
+                </div>
+                <span class="pill-badge pill-cyan">HSV Physics</span>
+            </div>
+            <div class="hero-action-card">
+                <div>
+                    <div style="font-weight: 600; color: #F8FAFC; font-size: 0.95rem; margin-bottom: 2px;">Vascular Erythema Colorimetry</div>
+                    <div style="font-size: 0.82rem; color: #94A3B8;">CIE-Lab a* chrominance modeling decouples melanin pigmentation from micro-flush inflammation.</div>
+                </div>
+                <span class="pill-badge pill-emerald">CIE-Lab a*</span>
+            </div>
+            <div class="hero-action-card">
+                <div>
+                    <div style="font-weight: 600; color: #F8FAFC; font-size: 0.95rem; margin-bottom: 2px;">Surface Micro-Relief & Lesion Density</div>
+                    <div style="font-size: 0.82rem; color: #94A3B8;">Discrete 2D Laplacian gradient variance quantifies texture roughness and active blemishes.</div>
+                </div>
+                <span class="pill-badge pill-violet">Laplacian σ²</span>
+            </div>
+            <div class="hero-action-card">
+                <div>
+                    <div style="font-weight: 600; color: #F8FAFC; font-size: 0.95rem; margin-bottom: 2px;">Deterministic Chemical Safety Clearance</div>
+                    <div style="font-size: 0.82rem; color: #94A3B8;">Hard-coded constraint graph intercepts 28+ active compound collisions (Retinoid/Acid, Redox clashes, SPF lock).</div>
+                </div>
+                <span class="pill-badge pill-amber">Zero Collision</span>
             </div>
         </div>
     """, unsafe_allow_html=True)

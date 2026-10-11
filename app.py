@@ -29,6 +29,7 @@ from skinnalgo.recommender.export import RoutineExporter
 from skinnalgo.ui.styles import inject_luxury_styles
 from skinnalgo.ui.components import (
     render_header,
+    render_empty_hero,
     render_metric_cards,
     render_safety_banner,
     render_routine_steps,
@@ -73,114 +74,18 @@ if "cross_val" not in st.session_state:
     st.session_state.cross_val = None
 
 
-# Render branding header
-render_header()
-
-# Sidebar: Intake and Image Selector
-with st.sidebar:
-    st.markdown("### 📋 Clinical Intake & Capture")
-    
-    # Image Input Option
-    img_mode = st.radio(
-        "Facial Portrait Source",
-        ["Clinical Preset Samples", "Upload Image", "Webcam Capture"],
-        index=0
-    )
-
-    input_bgr = None
-    preset_names = {
-        "Oily & Active Breakouts": "assets/samples/oily_acne_profile.png",
-        "Dry & Vascular Erythema": "assets/samples/dry_erythema_profile.png",
-        "Combination & Hyperpigmentation": "assets/samples/combo_pigment_profile.png",
-        "Balanced Eudermic": "assets/samples/balanced_profile.png"
-    }
-
-    if img_mode == "Clinical Preset Samples":
-        chosen_preset = st.selectbox(
-            "Select Preset Portrait",
-            list(preset_names.keys()),
-            index=0
-        )
-        sample_path = preset_names[chosen_preset]
-        if os.path.exists(sample_path):
-            input_bgr = cv2.imread(sample_path)
-            st.image(cv2.cvtColor(input_bgr, cv2.COLOR_BGR2RGB), caption=f"Preset: {chosen_preset}", use_container_width=True)
-
-    elif img_mode == "Upload Image":
-        uploaded_file = st.file_uploader("Upload Portrait", type=["jpg", "jpeg", "png"])
-        if uploaded_file is not None:
-            pil_img = Image.open(uploaded_file).convert("RGB")
-            input_bgr = cv2.cvtColor(np.array(pil_img), cv2.COLOR_RGB2BGR)
-            st.image(pil_img, caption="Uploaded Portrait", use_container_width=True)
-
-    elif img_mode == "Webcam Capture":
-        cam_file = st.camera_input("Take Live Portrait")
-        if cam_file is not None:
-            pil_img = Image.open(cam_file).convert("RGB")
-            input_bgr = cv2.cvtColor(np.array(pil_img), cv2.COLOR_RGB2BGR)
-
-    st.markdown("---")
-    st.markdown("### 🩺 4-Question Clinical Intake")
-
-    post_wash = st.selectbox(
-        "1. Skin feel 2h after washing:",
-        options=list(ClinicalAssessmentEngine.POST_WASH_LABELS.keys()),
-        format_func=lambda k: ClinicalAssessmentEngine.POST_WASH_LABELS[k],
-        index=2 if img_mode == "Clinical Preset Samples" and "Oily" in chosen_preset else (
-            0 if img_mode == "Clinical Preset Samples" and "Dry" in chosen_preset else (
-                3 if img_mode == "Clinical Preset Samples" and "Combination" in chosen_preset else 1
-            )
-        )
-    )
-
-    env = st.selectbox(
-        "2. Climate & Environment:",
-        options=list(ClinicalAssessmentEngine.ENVIRONMENT_LABELS.keys()),
-        format_func=lambda k: ClinicalAssessmentEngine.ENVIRONMENT_LABELS[k],
-        index=0
-    )
-
-    barrier = st.selectbox(
-        "3. Barrier Reactivity / Sensitivity:",
-        options=list(ClinicalAssessmentEngine.BARRIER_LABELS.keys()),
-        format_func=lambda k: ClinicalAssessmentEngine.BARRIER_LABELS[k],
-        index=0 if img_mode == "Clinical Preset Samples" and "Dry" in chosen_preset else 2
-    )
-
-    goal = st.selectbox(
-        "4. Primary Skincare Objective:",
-        options=list(ClinicalAssessmentEngine.GOAL_LABELS.keys()),
-        format_func=lambda k: ClinicalAssessmentEngine.GOAL_LABELS[k],
-        index=0 if img_mode == "Clinical Preset Samples" and "Oily" in chosen_preset else (
-            2 if img_mode == "Clinical Preset Samples" and "Dry" in chosen_preset else (
-                1 if img_mode == "Clinical Preset Samples" and "Combination" in chosen_preset else 3
-            )
-        )
-    )
-
-    st.markdown("---")
-    st.markdown("### 🤖 Synthesis Engine")
-    api_key_input = st.text_input(
-        "Gemini API Key (Optional)",
-        type="password",
-        help="Leave blank to run deterministic offline clinical expert engine."
-    )
-
-    analyze_btn = st.button("Analyze Skin & Synthesize Regimen", use_container_width=True)
-
-
-# Processing trigger
-if analyze_btn and input_bgr is not None:
-    with st.spinner("Running Computer Vision colorimetry and landmark segmentation..."):
+# Helper function for executing analysis
+def run_analysis_pipeline(bgr_img, p_wash, p_env, p_barrier, p_goal):
+    with st.spinner("Executing Computer Vision colorimetry and landmark segmentation..."):
         cv_pipe = get_cv_pipeline()
-        analysis = cv_pipe.analyze(input_bgr)
+        analysis = cv_pipe.analyze(bgr_img)
         st.session_state.analysis_result = analysis
 
         intake_obj = ClinicalIntakeData(
-            post_wash_feel=post_wash,
-            environment=env,
-            barrier_reactivity=barrier,
-            primary_goal=goal
+            post_wash_feel=p_wash,
+            environment=p_env,
+            barrier_reactivity=p_barrier,
+            primary_goal=p_goal
         )
         st.session_state.intake_data = intake_obj
 
@@ -193,10 +98,120 @@ if analyze_btn and input_bgr is not None:
         )
         st.session_state.cross_val = cross_val_obj
 
-        # Synthesize Regimen
-        recommender = GeminiRegimenRecommender(api_key=api_key_input)
+        # Synthesize Regimen (auto-detects API key from Streamlit secrets or env)
+        recommender = GeminiRegimenRecommender(api_key=None)
         regimen = recommender.formulate(analysis, intake_obj, cross_val_obj)
         st.session_state.regimen_result = regimen
+
+
+# Render branding header
+render_header()
+
+preset_names = {
+    "Oily & Active Breakouts": "assets/samples/oily_acne_profile.png",
+    "Dry & Vascular Erythema": "assets/samples/dry_erythema_profile.png",
+    "Combination & Hyperpigmentation": "assets/samples/combo_pigment_profile.png",
+    "Balanced Eudermic": "assets/samples/balanced_profile.png"
+}
+
+# Sidebar: Intake and Image Selector
+with st.sidebar:
+    st.markdown("### Facial Portrait & Intake")
+    
+    # Image Input Option (Default to Upload Portrait)
+    img_mode = st.radio(
+        "Portrait Source",
+        ["Upload Portrait", "Clinical Presets", "Webcam Capture"],
+        index=0
+    )
+
+    input_bgr = None
+    default_avatar_path = "assets/default_avatar.png"
+
+    if img_mode == "Upload Portrait":
+        uploaded_file = st.file_uploader("Select Portrait Image", type=["jpg", "jpeg", "png"], help="High-resolution frontal view in natural lighting.")
+        if uploaded_file is not None:
+            pil_img = Image.open(uploaded_file).convert("RGB")
+            input_bgr = cv2.cvtColor(np.array(pil_img), cv2.COLOR_RGB2BGR)
+            st.image(pil_img, caption="Loaded Facial Portrait", use_container_width=True)
+        else:
+            if os.path.exists(default_avatar_path):
+                st.image(default_avatar_path, caption="Awaiting Portrait Upload", use_container_width=True)
+
+    elif img_mode == "Clinical Presets":
+        chosen_preset = st.selectbox(
+            "Select Calibrated Profile",
+            list(preset_names.keys()),
+            index=0
+        )
+        sample_path = preset_names[chosen_preset]
+        if os.path.exists(sample_path):
+            input_bgr = cv2.imread(sample_path)
+            st.image(cv2.cvtColor(input_bgr, cv2.COLOR_BGR2RGB), caption=f"Profile: {chosen_preset}", use_container_width=True)
+
+    elif img_mode == "Webcam Capture":
+        cam_file = st.camera_input("Capture Live Portrait")
+        if cam_file is not None:
+            pil_img = Image.open(cam_file).convert("RGB")
+            input_bgr = cv2.cvtColor(np.array(pil_img), cv2.COLOR_RGB2BGR)
+
+    st.markdown("---")
+    st.markdown("### Clinical Assessment")
+
+    post_wash = st.selectbox(
+        "1. Skin feel 2h post-cleansing:",
+        options=list(ClinicalAssessmentEngine.POST_WASH_LABELS.keys()),
+        format_func=lambda k: ClinicalAssessmentEngine.POST_WASH_LABELS[k],
+        index=2 if img_mode == "Clinical Presets" and "Oily" in chosen_preset else (
+            0 if img_mode == "Clinical Presets" and "Dry" in chosen_preset else (
+                3 if img_mode == "Clinical Presets" and "Combination" in chosen_preset else 1
+            )
+        )
+    )
+
+    env = st.selectbox(
+        "2. Climate & Environment:",
+        options=list(ClinicalAssessmentEngine.ENVIRONMENT_LABELS.keys()),
+        format_func=lambda k: ClinicalAssessmentEngine.ENVIRONMENT_LABELS[k],
+        index=0
+    )
+
+    barrier = st.selectbox(
+        "3. Barrier Sensitivity / Reactivity:",
+        options=list(ClinicalAssessmentEngine.BARRIER_LABELS.keys()),
+        format_func=lambda k: ClinicalAssessmentEngine.BARRIER_LABELS[k],
+        index=0 if img_mode == "Clinical Presets" and "Dry" in chosen_preset else 2
+    )
+
+    goal = st.selectbox(
+        "4. Primary Skincare Objective:",
+        options=list(ClinicalAssessmentEngine.GOAL_LABELS.keys()),
+        format_func=lambda k: ClinicalAssessmentEngine.GOAL_LABELS[k],
+        index=0 if img_mode == "Clinical Presets" and "Oily" in chosen_preset else (
+            2 if img_mode == "Clinical Presets" and "Dry" in chosen_preset else (
+                1 if img_mode == "Clinical Presets" and "Combination" in chosen_preset else 3
+            )
+        )
+    )
+
+    st.markdown("---")
+    st.markdown("""
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.9rem;">
+            <span style="font-size: 0.74rem; color: #64748B; text-transform: uppercase; font-weight: 600; letter-spacing: 0.06em;">Synthesis Engine</span>
+            <span class="pill-badge pill-emerald">Dual Engine Ready</span>
+        </div>
+    """, unsafe_allow_html=True)
+
+    analyze_btn = st.button("Run Skin Diagnostic", use_container_width=True)
+
+
+# Processing trigger from sidebar button
+if analyze_btn:
+    if input_bgr is not None:
+        run_analysis_pipeline(input_bgr, post_wash, env, barrier, goal)
+        st.rerun()
+    else:
+        st.sidebar.warning("Please upload a portrait or select a preset before analyzing.")
 
 
 # Main View Tabs
@@ -213,7 +228,35 @@ tab1, tab2, tab3, tab4 = st.tabs([
 # =====================================================================
 with tab1:
     if st.session_state.analysis_result is None:
-        st.info("Please select a clinical preset portrait or upload an image in the sidebar, then click 'Analyze Skin & Synthesize Regimen'.")
+        render_empty_hero()
+
+        st.markdown("<div style='text-align: center; margin-bottom: 0.8rem; font-size: 0.85rem; color: #64748B; font-weight: 500;'>Or test immediately with a calibrated clinical profile:</div>", unsafe_allow_html=True)
+        qc1, qc2, qc3, qc4 = st.columns(4)
+
+        with qc1:
+            if st.button("Oily & Breakouts", use_container_width=True, key="qc_oily"):
+                p_img = cv2.imread(preset_names["Oily & Active Breakouts"])
+                run_analysis_pipeline(p_img, "shiny_all_over", "humid_tropical", "resilient", "clear_breakouts")
+                st.rerun()
+
+        with qc2:
+            if st.button("Dry & Erythema", use_container_width=True, key="qc_dry"):
+                p_img = cv2.imread(preset_names["Dry & Vascular Erythema"])
+                run_analysis_pipeline(p_img, "tight_parched", "cold_arid", "stings_easily", "repair_barrier")
+                st.rerun()
+
+        with qc3:
+            if st.button("Combination Skin", use_container_width=True, key="qc_combo"):
+                p_img = cv2.imread(preset_names["Combination & Hyperpigmentation"])
+                run_analysis_pipeline(p_img, "oily_t_zone_only", "moderate_temperate", "resilient", "fade_dark_spots")
+                st.rerun()
+
+        with qc4:
+            if st.button("Balanced Skin", use_container_width=True, key="qc_balanced"):
+                p_img = cv2.imread(preset_names["Balanced Eudermic"])
+                run_analysis_pipeline(p_img, "balanced_supple", "moderate_temperate", "resilient", "smooth_texture")
+                st.rerun()
+
     else:
         cv_res: SkinAnalysisResult = st.session_state.analysis_result
 
@@ -285,7 +328,15 @@ with tab1:
 # =====================================================================
 with tab2:
     if st.session_state.regimen_result is None:
-        st.info("Run skin analysis in the sidebar to generate a formulated cosmeceutical regimen.")
+        st.markdown("""
+            <div class="luxury-card" style="text-align: center; padding: 2.5rem 1rem; margin-top: 1rem;">
+                <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">🧪</div>
+                <div style="font-weight: 600; font-size: 1.1rem; color: #F8FAFC; margin-bottom: 0.4rem;">Regimen Synthesis Pending</div>
+                <div style="font-size: 0.88rem; color: #94A3B8; max-width: 500px; margin: 0 auto;">
+                    Run the skin diagnostic in the sidebar or from the home tab to formulate your individualized AM/PM cosmeceutical active protocol.
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
     else:
         regimen: FormulatedRegimen = st.session_state.regimen_result
         cv_res: SkinAnalysisResult = st.session_state.analysis_result

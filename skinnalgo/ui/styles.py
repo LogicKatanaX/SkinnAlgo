@@ -14,36 +14,96 @@ html, body, [class*="css"], [class*="st-"] {
 
 /* Base App Obsidian Background */
 .stApp {
-    background-color: #0A0B0E;
+    background-color: #0c0d12 !important;
     background-image: 
-        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.05) 0px, transparent 50%);
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99, 102, 241, 0.12) 0%, rgba(12, 13, 18, 0.98) 60%, #090a0e 100%) !important;
+    background-attachment: fixed !important;
 }
 
-/* Header & Serif Title */
+/* Precision Sleek Scrollbars */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: #1e2230;
+    border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #31384e;
+}
+
+/* Flagship Header & Branding */
+.brand-hero-container {
+    text-align: center;
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+    animation: heroFadeIn 0.4s ease-out;
+}
+@keyframes heroFadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.brand-avatar-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 68px;
+    height: 68px;
+    border-radius: 20px;
+    background: radial-gradient(circle at 50% 30%, rgba(99, 102, 241, 0.25) 0%, rgba(20, 22, 32, 0.95) 75%);
+    border: 1px solid rgba(99, 102, 241, 0.4);
+    box-shadow: 0 0 32px rgba(99, 102, 241, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    margin-bottom: 16px;
+}
+
 .brand-title {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     font-weight: 700;
-    letter-spacing: -0.03em;
-    background: linear-gradient(135deg, #FFFFFF 30%, #94A3B8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 0.2rem;
+    letter-spacing: -0.035em;
+    color: #F8FAFC;
+    margin-bottom: 0.3rem;
 }
 
 .brand-subtitle {
-    font-family: 'Newsreader', Georgia, serif;
-    font-style: italic;
-    font-size: 1.15rem;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Plus Jakarta Sans", sans-serif;
+    font-size: 1.05rem;
     color: #94A3B8;
-    margin-bottom: 1.8rem;
-    letter-spacing: 0.01em;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.01em;
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Flagship Feature Action Cards */
+.hero-action-card {
+    background: rgba(20, 23, 33, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 0.85rem;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.hero-action-card:hover {
+    background: rgba(26, 30, 44, 0.85);
+    border-color: rgba(99, 102, 241, 0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.5);
 }
 
 /* Glassmorphism Card Container */
 .luxury-card {
-    background: #14171F;
-    border: 1px solid #232734;
+    background: #131620;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 14px;
     padding: 1.4rem 1.6rem;
     margin-bottom: 1.2rem;
