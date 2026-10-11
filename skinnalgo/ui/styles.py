@@ -11,9 +11,18 @@ html {
     scroll-behavior: smooth;
 }
 
-html, body, p, h1, h2, h3, h4, h5, h6, label, input, textarea, select, button, div.stMarkdown, div.stText {
+html, body, p, h1, h2, h3, h4, h5, h6, label, input, textarea, select, div.stMarkdown, div.stText {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     color: #0F172A;
+}
+
+/* Ensure markdown containers inside buttons never inherit dark text */
+button div.stMarkdown,
+button div[data-testid="stMarkdownContainer"],
+button p,
+button span {
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
 }
 
 /* Ensure Streamlit Material Icon ligatures and SVGs are never overridden */
@@ -21,16 +30,29 @@ html, body, p, h1, h2, h3, h4, h5, h6, label, input, textarea, select, button, d
     font-family: 'Material Symbols Rounded', 'Material Icons', sans-serif !important;
 }
 
-/* Fix File Uploader Button layout & icon alignment */
+/* Fix File Uploader Button layout, typography & icon alignment */
 [data-testid="stFileUploaderDropzone"] button {
     display: inline-flex !important;
     align-items: center !important;
+    justify-content: center !important;
     gap: 8px !important;
     white-space: nowrap !important;
     background: linear-gradient(135deg, #0284C7 0%, #0D9488 100%) !important;
     color: #FFFFFF !important;
+    font-weight: 700 !important;
+    font-size: 0.92rem !important;
     border-radius: 10px !important;
-    border: none !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 4px 14px rgba(14, 165, 233, 0.3) !important;
+}
+
+[data-testid="stFileUploaderDropzone"] button *,
+[data-testid="stFileUploaderDropzone"] button p,
+[data-testid="stFileUploaderDropzone"] button span,
+[data-testid="stFileUploaderDropzone"] button div {
+    color: #FFFFFF !important;
+    fill: #FFFFFF !important;
+    font-weight: 700 !important;
 }
 
 /* File Uploader Dropzone Container (Zero Dark Mode) */
@@ -546,29 +568,56 @@ details, [data-testid="stExpander"] {
     line-height: 1.55;
 }
 
-/* Sleek Sea-Blue to Sea-Green Button Styling */
-.stButton > button {
+/* Sleek Sea-Blue to Sea-Green Button Styling with Bold White Typography */
+.stButton > button,
+button[data-testid*="baseButton"] {
     background: linear-gradient(135deg, #0284C7 0%, #0D9488 100%) !important;
     color: #FFFFFF !important;
-    font-weight: 600 !important;
-    font-size: 0.94rem !important;
+    font-weight: 700 !important;
+    font-size: 0.96rem !important;
     border-radius: 12px !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
     padding: 0.7rem 1.8rem !important;
-    letter-spacing: -0.01em !important;
+    letter-spacing: 0.01em !important;
     box-shadow: 0 6px 20px rgba(14, 165, 233, 0.35) !important;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15) !important;
 }
 
-.stButton > button:hover {
+/* Force pure white bold typography on all button child elements (p, span, div, etc.) */
+.stButton > button *,
+.stButton > button p,
+.stButton > button span,
+.stButton > button div,
+button[data-testid*="baseButton"] *,
+button[data-testid*="baseButton"] p,
+button[data-testid*="baseButton"] span,
+button[data-testid*="baseButton"] div {
+    color: #FFFFFF !important;
+    fill: #FFFFFF !important;
+    font-weight: 700 !important;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15) !important;
+}
+
+.stButton > button:hover,
+button[data-testid*="baseButton"]:hover {
     background: linear-gradient(135deg, #0369A1 0%, #0F766E 100%) !important;
     transform: translateY(-2px) !important;
     box-shadow: 0 10px 28px rgba(14, 165, 233, 0.45) !important;
-    border-color: rgba(255, 255, 255, 0.5) !important;
+    border-color: rgba(255, 255, 255, 0.6) !important;
 }
 
-.stButton > button:active {
+.stButton > button:hover *,
+button[data-testid*="baseButton"]:hover * {
+    color: #FFFFFF !important;
+    fill: #FFFFFF !important;
+}
+
+.stButton > button:active,
+button[data-testid*="baseButton"]:active {
     transform: translateY(0px) !important;
+    box-shadow: 0 4px 14px rgba(14, 165, 233, 0.3) !important;
 }
 
 /* Tabs Header */
