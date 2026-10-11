@@ -1,0 +1,4 @@
+"""
+SkinnAlgo test suite.
+"""
+
