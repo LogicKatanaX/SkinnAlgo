@@ -179,15 +179,8 @@ capture_col_left, capture_col_right = st.columns([1.15, 0.85], gap="large")
 input_bgr = None
 
 with capture_col_left:
-    img_mode = st.radio(
-        "Select Diagnostic Input Mode:",
-        ["Upload Facial Portrait"],
-        index=0,
-        horizontal=True
-    )
-
     uploaded_file = st.file_uploader(
-        "Upload Frontal Selfie (JPG or PNG):",
+        "Upload Facial Portrait (JPG or PNG):",
         type=["jpg", "jpeg", "png"],
         help="High-resolution frontal view in natural daylight, without makeup or filters."
     )

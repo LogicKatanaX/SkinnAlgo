@@ -11,9 +11,22 @@ html {
     scroll-behavior: smooth;
 }
 
-html, body, [class*="css"], [class*="st-"] {
+html, body, p, h1, h2, h3, h4, h5, h6, label, input, textarea, select, button, div.stMarkdown, div.stText {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     color: #F1F5F9;
+}
+
+/* Ensure Streamlit Material Icon ligatures and SVGs are never overridden */
+[data-testid*="Icon"], [class*="material-symbols"], span[class*="stIcon"], .material-symbols-rounded {
+    font-family: 'Material Symbols Rounded', 'Material Icons', sans-serif !important;
+}
+
+/* Fix File Uploader Button layout & icon alignment */
+[data-testid="stFileUploaderDropzone"] button {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    white-space: nowrap !important;
 }
 
 /* Base App Obsidian Background */
