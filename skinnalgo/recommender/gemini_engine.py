@@ -31,8 +31,11 @@ class GeminiRegimenRecommender:
         if not api_key:
             try:
                 import streamlit as st
-                if hasattr(st, "secrets") and "GEMINI_API_KEY" in st.secrets:
-                    api_key = st.secrets["GEMINI_API_KEY"]
+                if hasattr(st, "secrets"):
+                    if "GEMINI_API_KEY" in st.secrets and st.secrets["GEMINI_API_KEY"]:
+                        api_key = st.secrets["GEMINI_API_KEY"]
+                    elif "GOOGLE_API_KEY" in st.secrets and st.secrets["GOOGLE_API_KEY"]:
+                        api_key = st.secrets["GOOGLE_API_KEY"]
             except Exception:
                 pass
         self.api_key = api_key or os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
@@ -140,15 +143,38 @@ Return a STRICT JSON object with the following schema:
         try:
             prompt = self.build_prompt_payload(cv_result, intake, cross_val)
             
-            # Using Gemini 2.5 Flash for ultra-fast, high-accuracy structured reasoning
-            response = self.client.models.generate_content(
-                model="gemini-2.5-flash",
-                contents=prompt,
-                config=types.GenerateContentConfig(
-                    response_mime_type="application/json",
-                    temperature=0.2,
-                )
-            )
+            # Cascade through official high-speed Gemini models
+            candidate_models = [
+                "gemini-2.0-flash",
+                "gemini-2.0-flash-lite",
+                "gemini-1.5-flash",
+                "gemini-1.5-pro",
+            ]
+            response = None
+            last_err = None
+            model_used_name = "gemini-2.0-flash"
+
+            for model_name in candidate_models:
+                try:
+                    response = self.client.models.generate_content(
+                        model=model_name,
+                        contents=prompt,
+                        config=types.GenerateContentConfig(
+                            response_mime_type="application/json",
+                            temperature=0.2,
+                        )
+                    )
+                    if response and response.text:
+                        model_used_name = model_name
+                        break
+                except Exception as ex:
+                    last_err = ex
+                    continue
+
+            if not response or not response.text:
+                if last_err:
+                    raise last_err
+                raise RuntimeError("Empty response received from Gemini API")
 
             data = json.loads(response.text)
 
@@ -196,12 +222,12 @@ Return a STRICT JSON object with the following schema:
                 safety_clearance=safety_res,
                 clinical_precautions=data.get("clinical_precautions", []),
                 expected_timeline_weeks=int(data.get("expected_timeline_weeks", 6)),
-                engine_used="Google Gemini Multimodal Fusion"
+                engine_used=f"Google Gemini Multimodal Fusion ({model_used_name})"
             )
 
         except Exception as e:
-            # Fallback gracefully
+            # Fallback gracefully to deterministic clinical engine
             fallback = self.fallback_engine.synthesize(cv_result, intake, cross_val)
-            fallback.clinical_precautions.append(f"(Gemini API note: Switched to deterministic clinical engine: {str(e)[:60]})")
+            fallback.clinical_precautions.append(f"Clinical Engine Note: Regimen formulated using deterministic cosmeceutical knowledge graph. ({str(e)[:70]})")
             return fallback
 

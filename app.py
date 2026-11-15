@@ -311,10 +311,10 @@ st.markdown("""
             Ready to Synthesize Skin Intelligence
         </div>
         <div style="font-size: 0.9rem; color: #475569; max-width: 620px; margin: 0 auto 1.4rem auto; line-height: 1.55;">
-            Fuses CIE-Lab colorimetric decoupling, specular lipid reflectance physics, and Gemini 2.5 multimodal formulation with zero chemical collisions.
+            Fuses CIE-Lab colorimetric decoupling, specular lipid reflectance physics, and Gemini 2.0 Flash multimodal formulation with zero chemical collisions.
         </div>
         <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 1.5rem; flex-wrap: wrap;">
-            <span class="pill-badge pill-emerald">⚡ Dual Engine: Gemini 2.5 + Safety Core</span>
+            <span class="pill-badge pill-emerald">⚡ Dual Engine: Gemini 2.0 Flash + Safety Core</span>
             <span class="pill-badge pill-cyan">🛡️ 28 Actives Knowledge Graph</span>
             <span class="pill-badge pill-violet">🔬 Anthropometric Face Mesh</span>
         </div>
